@@ -123,3 +123,34 @@ export async function deleteFeedback(feedbackId: number) {
 
   return { success: true };
 }
+
+export async function evaluateStudentQuestions(studentId: string, studentName: string) {
+  const supabase = await createClient();
+
+  const { data: questions } = await supabase
+    .from('questions')
+    .select('question_text, question_type, created_at')
+    .eq('student_id', studentId)
+    .order('created_at', { ascending: true }); // chronological order
+
+  if (!questions || questions.length === 0) {
+    return { success: false, error: '분석할 질문 기록이 부족합니다.' };
+  }
+
+  const typeLabelMap: Record<string, string> = {
+    factual: '사실적 질문',
+    inferential: '추론적 질문',
+    evaluative: '평가적 질문',
+  };
+
+  const formattedQuestions = questions.map((q) => ({
+    text: q.question_text,
+    type: typeLabelMap[q.question_type] || q.question_type,
+    date: new Date(q.created_at).toLocaleDateString('ko-KR'),
+  }));
+
+  const { analyzeStudentProgress } = await import('@/lib/gemini');
+  const result = await analyzeStudentProgress(studentName, formattedQuestions);
+
+  return { success: true, result };
+}

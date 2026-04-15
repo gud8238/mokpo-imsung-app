@@ -29,8 +29,10 @@ import {
   IconTrash,
   IconMessagePlus,
   IconBook,
+  IconWand,
+  IconDownload,
 } from '@tabler/icons-react';
-import { deleteQuestion, submitFeedback } from '@/actions/questions';
+import { deleteQuestion, submitFeedback, evaluateStudentQuestions } from '@/actions/questions';
 
 const TYPE_LABEL: Record<string, string> = {
   factual: '사실적 질문',
@@ -58,6 +60,12 @@ export default function StudentQuestionsView({
   const [feedbackText, setFeedbackText] = useState('');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+
+  // AI 분석
+  const [aiLoading, setAiLoading] = useState(false);
+  const [aiResult, setAiResult] = useState<any>(null);
+  const [downloadingHwpx, setDownloadingHwpx] = useState(false);
+  const [aiModalOpened, { open: openAiModal, close: closeAiModal }] = useDisclosure(false);
 
   // Group by book
   const bookGroups: Record<number, { book: any; questions: any[] }> = {};
@@ -102,6 +110,46 @@ export default function StudentQuestionsView({
     }
   }
 
+  async function handleAiAnalysis() {
+    setAiLoading(true);
+    const result = await evaluateStudentQuestions(student.id, student.name);
+    setAiLoading(false);
+    if (result.success && result.result) {
+      setAiResult(result.result);
+      openAiModal();
+    } else {
+      setMessage({ type: 'error', text: result.error || '분석에 실패했습니다.' });
+    }
+  }
+
+  function handleDownloadHwpx() {
+    if (!aiResult) return;
+    
+    // 네이티브 브라우저 다운로드 방식을 위해 동적 Form 생성
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = '/api/download-hwpx';
+    
+    const fields = {
+      studentName: student.name,
+      summary: aiResult.summary,
+      strengths: aiResult.strengths,
+      areas_for_improvement: aiResult.areas_for_improvement,
+    };
+    
+    for (const [key, value] of Object.entries(fields)) {
+      const input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = key;
+      input.value = value || '';
+      form.appendChild(input);
+    }
+    
+    document.body.appendChild(form);
+    form.submit();
+    document.body.removeChild(form);
+  }
+
   return (
     <Container size="md" py="xl">
       <Button
@@ -130,9 +178,22 @@ export default function StudentQuestionsView({
               </Badge>
             )}
           </Box>
-          <Badge color="green" variant="light" size="lg" ml="auto">
-            질문 {questions.length}개
-          </Badge>
+          <Group gap="sm" ml="auto">
+            <Badge color="green" variant="light" size="lg">
+              질문 {questions.length}개
+            </Badge>
+            <Button
+              leftSection={<IconWand size={16} />}
+              variant="light"
+              color="indigo"
+              radius="md"
+              onClick={handleAiAnalysis}
+              loading={aiLoading}
+              disabled={questions.length === 0}
+            >
+              AI 질문 진단
+            </Button>
+          </Group>
         </Group>
       </Paper>
 
@@ -287,6 +348,45 @@ export default function StudentQuestionsView({
             피드백 등록
           </Button>
         </Stack>
+      </Modal>
+
+      {/* AI AI Diagnosis Modal */}
+      <Modal
+        opened={aiModalOpened}
+        onClose={closeAiModal}
+        title={<Group><IconWand size={20} color="#7950f2"/><Text fw={700}>AI 질문 수준 진단</Text></Group>}
+        radius="lg"
+        size="lg"
+        centered
+      >
+        {aiResult && (
+          <Stack gap="md">
+            <Box p="md" style={{ background: 'rgba(76,110,245,0.05)', borderRadius: 12 }}>
+              <Title order={5} c="indigo.7" mb="xs">총평</Title>
+              <Text size="sm" style={{ lineHeight: 1.6 }}>{aiResult.summary}</Text>
+            </Box>
+            <Box p="md" style={{ background: 'rgba(64,192,87,0.05)', borderRadius: 12 }}>
+              <Title order={5} c="green.7" mb="xs">잘하고 있는 점</Title>
+              <Text size="sm" style={{ lineHeight: 1.6 }}>{aiResult.strengths}</Text>
+            </Box>
+            <Box p="md" style={{ background: 'rgba(250,176,5,0.05)', borderRadius: 12 }}>
+              <Title order={5} c="yellow.8" mb="xs">앞으로의 발전 방향</Title>
+              <Text size="sm" style={{ lineHeight: 1.6 }}>{aiResult.areas_for_improvement}</Text>
+            </Box>
+            
+            <Button
+              mt="md"
+              variant="light"
+              color="indigo"
+              leftSection={<IconDownload size={16} />}
+              loading={downloadingHwpx}
+              onClick={handleDownloadHwpx}
+              fullWidth
+            >
+              📄 결과 보고서 다운로드 (HWPX)
+            </Button>
+          </Stack>
+        )}
       </Modal>
     </Container>
   );

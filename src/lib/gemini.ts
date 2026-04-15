@@ -119,3 +119,62 @@ export async function analyzeQuestion(
     encouragement: '앞으로도 다양한 종류의 질문을 만들어 보세요! 여러분의 생각이 점점 더 깊어질 거예요. 🌟',
   };
 }
+
+export interface StudentProgressResult {
+  summary: string;
+  strengths: string;
+  areas_for_improvement: string;
+}
+
+export async function analyzeStudentProgress(
+  studentName: string,
+  questions: { text: string; type: string; date: string }[]
+): Promise<StudentProgressResult> {
+  const model = genAI.getGenerativeModel({ model: 'gemma-3-27b-it' });
+
+  const formattedQuestions = questions
+    .map((q, i) => `${i + 1}. [${q.date}] 유형: ${q.type} | 질문: "${q.text}"`)
+    .join('\n');
+
+  const prompt = `당신은 목포임성초등학교의 따뜻하고 전문적인 독서 교육 AI 도우미입니다.
+다음은 '${studentName}' 학생이 그동안 남긴 독서 질문들의 전체 기록입니다. 시간 순서대로 정렬되어 있습니다.
+
+[학생의 질문 기록]
+${formattedQuestions}
+
+이 학생이 독서 질문 활동을 하면서 어떻게 성장했는지, 혹은 어떤 특징을 보이는지 분석해주세요.
+- 이전에는 단순 사실적 질문만 하다가 최근 추론적/평가적 질문으로 나아갔는지 등 변화 패턴을 파악하세요.
+- 질문의 수준이나 일관성 등 잘하고 있는 점을 칭찬해주세요.
+- 앞으로 더 깊이 있는 사고를 위해 어떤 방식의 질문을 시도해보면 좋을지 조언해주세요.
+- 초등학생이 직접 읽었을 때 이해하기 쉽고 기분 좋게 동기부여가 되는 따뜻한 말투(해요체)를 사용하세요.
+
+반드시 아래 JSON 형식으로만 응답하세요. 다른 텍스트나 마크다운 기호(\`\`\`json 등)를 제외하고 오직 JSON 중괄호 만 출력하세요:
+{
+  "summary": "학생의 전반적인 질문 수준과 시간적 변화/성장에 대한 종합 평가 (3~4문장)",
+  "strengths": "칭찬할 만한 점이나 잘 만들어진 질문 방식을 구체적으로 언급 (2~3문장)",
+  "areas_for_improvement": "앞으로 시도해보면 좋을 질문 추천이나 조언 (2~3문장)"
+}`;
+
+  // Retry logic
+  for (let attempt = 0; attempt < 3; attempt++) {
+    try {
+      const result = await model.generateContent(prompt);
+      const text = result.response.text();
+      const jsonMatch = text.match(/\{[\s\S]*\}/);
+      if (!jsonMatch) throw new Error('No JSON found in response');
+      return JSON.parse(jsonMatch[0]) as StudentProgressResult;
+    } catch (error: unknown) {
+      if ((error as { status?: number })?.status === 429 && attempt < 2) {
+        await new Promise((resolve) => setTimeout(resolve, 2000 * (attempt + 1)));
+        continue;
+      }
+      console.error('Gemini error analyzing progress:', error);
+    }
+  }
+
+  return {
+    summary: `${studentName} 학생은 항상 책을 읽고 호기심을 가지며 열심히 질문을 만들고 있어요. 질문의 내용을 보면 매번 책을 얼마나 주의 깊게 읽었는지 알 수 있답니다.`,
+    strengths: '책의 내용을 궁금해하고 그것을 다른 사람도 이해할 수 있게 질문으로 표현하는 능력이 훌륭해요!',
+    areas_for_improvement: '앞으로는 정답이 정해져 있지 않은 나만의 생각, "만약 나라면 어땠을까?" 같은 질문도 한번 만들어보면 더 멋질 거예요. 응원합니다!',
+  };
+}

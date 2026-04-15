@@ -22,10 +22,10 @@ export default async function TeacherPage() {
     .select('id, title, author, cover_image_url')
     .order('title');
 
-  // Get question counts per student
+  // Get question counts per student along with types for charts
   const { data: questionsByStudent } = await supabase
     .from('questions')
-    .select('student_id');
+    .select('student_id, question_type');
 
   // Get question counts per book
   const { data: questionsByBook } = await supabase
@@ -50,6 +50,7 @@ export default async function TeacherPage() {
       books={books || []}
       studentQuestionCounts={studentQuestionCounts}
       bookQuestionCounts={bookQuestionCounts}
+      questionsData={questionsByStudent || []}
     />
   );
 }

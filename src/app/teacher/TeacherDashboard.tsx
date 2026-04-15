@@ -22,7 +22,11 @@ import {
   IconBook,
   IconChevronRight,
   IconMessageCircle,
+  IconChartBar,
+  IconTrophy,
 } from '@tabler/icons-react';
+import { BarChart } from '@mantine/charts';
+import '@mantine/charts/styles.css';
 
 interface Student {
   id: string;
@@ -42,11 +46,13 @@ export default function TeacherDashboard({
   books,
   studentQuestionCounts,
   bookQuestionCounts,
+  questionsData,
 }: {
   students: Student[];
   books: Book[];
   studentQuestionCounts: Record<string, number>;
   bookQuestionCounts: Record<number, number>;
+  questionsData?: { student_id: string; question_type: string }[];
 }) {
   // Group students by class
   const classesByName: Record<string, Student[]> = {};
@@ -60,6 +66,44 @@ export default function TeacherDashboard({
     (sum, count) => sum + count,
     0
   );
+
+  // 학급별 통계 데이터 준비
+  const classQuestionMap: Record<string, { factual: number; inferential: number; evaluative: number }> = {};
+  
+  if (questionsData) {
+    questionsData.forEach((q) => {
+      const student = students.find((s) => s.id === q.student_id);
+      if (!student) return;
+      const cls = student.class_name || '미지정';
+      
+      if (!classQuestionMap[cls]) {
+        classQuestionMap[cls] = { factual: 0, inferential: 0, evaluative: 0 };
+      }
+      
+      if (q.question_type === 'factual') classQuestionMap[cls].factual++;
+      else if (q.question_type === 'inferential') classQuestionMap[cls].inferential++;
+      else if (q.question_type === 'evaluative') classQuestionMap[cls].evaluative++;
+    });
+  }
+
+  const chartData = Object.entries(classQuestionMap)
+    .map(([cls, counts]) => ({
+      className: cls,
+      '사실적 질문': counts.factual,
+      '추론적 질문': counts.inferential,
+      '평가적 질문': counts.evaluative,
+    }))
+    .sort((a, b) => a.className.localeCompare(b.className));
+
+  // 질문 많이 한 학생 랭킹
+  const topStudents = students
+    .map((s) => ({
+      ...s,
+      qCount: studentQuestionCounts[s.id] || 0,
+    }))
+    .filter((s) => s.qCount > 0)
+    .sort((a, b) => b.qCount - a.qCount)
+    .slice(0, 10); // 상위 10명
 
   return (
     <Container size="lg" py="xl">
@@ -144,6 +188,9 @@ export default function TeacherDashboard({
           </Tabs.Tab>
           <Tabs.Tab value="books" leftSection={<IconBooks size={16} />}>
             책별 보기
+          </Tabs.Tab>
+          <Tabs.Tab value="stats" leftSection={<IconChartBar size={16} />}>
+            질문 현황 보기
           </Tabs.Tab>
         </Tabs.List>
 
@@ -279,6 +326,111 @@ export default function TeacherDashboard({
               })}
             </SimpleGrid>
           )}
+        </Tabs.Panel>
+
+        <Tabs.Panel value="stats">
+          <SimpleGrid cols={{ base: 1, md: 2 }} spacing="xl">
+            {/* 학급별 차트 */}
+            <Paper shadow="sm" radius="lg" p="xl" withBorder>
+              <Group mb="lg">
+                <Box
+                  style={{
+                    width: 32,
+                    height: 32,
+                    borderRadius: '50%',
+                    background: 'rgba(76,110,245,0.1)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <IconChartBar size={18} color="#4c6ef5" />
+                </Box>
+                <Title order={4} c="dark.7">
+                  학급별 질문 유형 통계
+                </Title>
+              </Group>
+
+              {chartData.length > 0 ? (
+                <BarChart
+                  h={300}
+                  data={chartData}
+                  dataKey="className"
+                  type="stacked"
+                  withLegend
+                  legendProps={{ verticalAlign: 'bottom', height: 40 }}
+                  series={[
+                    { name: '사실적 질문', color: 'blue.6' },
+                    { name: '추론적 질문', color: 'violet.6' },
+                    { name: '평가적 질문', color: 'orange.5' },
+                  ]}
+                />
+              ) : (
+                <Box py="xl" ta="center">
+                  <Text c="dimmed">아직 작성된 질문이 없습니다.</Text>
+                </Box>
+              )}
+            </Paper>
+
+            {/* 명예의 전당 (상위 학생들) */}
+            <Paper shadow="sm" radius="lg" p="xl" withBorder>
+              <Group mb="lg">
+                <Box
+                  style={{
+                    width: 32,
+                    height: 32,
+                    borderRadius: '50%',
+                    background: 'linear-gradient(135deg, #fcc419, #f59f00)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <IconTrophy size={18} color="white" />
+                </Box>
+                <Title order={4} c="dark.7">
+                  가장 질문을 많이 한 학생 (Top 10)
+                </Title>
+              </Group>
+
+              {topStudents.length > 0 ? (
+                <Stack gap="md">
+                  {topStudents.map((s, index) => (
+                    <Group key={s.id} justify="space-between" wrap="nowrap"
+                      style={{
+                        background: index < 3 ? 'linear-gradient(90deg, rgba(255,212,59,0.15) 0%, transparent 100%)' : undefined,
+                        padding: '8px 12px',
+                        borderRadius: 8,
+                      }}
+                    >
+                      <Group gap="sm" wrap="nowrap">
+                        <Badge
+                          color={index === 0 ? 'yellow.6' : index === 1 ? 'gray.4' : index === 2 ? 'orange.7' : 'gray.2'}
+                          variant="filled"
+                          size="lg"
+                          circle
+                          c={index > 2 ? 'dark.4' : 'white'}
+                        >
+                          {index + 1}
+                        </Badge>
+                        <Box>
+                          <Text fw={600} size="sm" c="dark.7">{s.name}</Text>
+                          <Text size="xs" c="dimmed">{s.class_name}</Text>
+                        </Box>
+                      </Group>
+                      <Badge color="indigo" variant="light" size="lg">
+                        {s.qCount}개
+                      </Badge>
+                    </Group>
+                  ))}
+                </Stack>
+              ) : (
+                <Box py="xl" ta="center">
+                  <Text c="dimmed">아직 작성된 질문이 없습니다.</Text>
+                </Box>
+              )}
+            </Paper>
+          </SimpleGrid>
         </Tabs.Panel>
       </Tabs>
     </Container>
