@@ -67,7 +67,7 @@ export default function StudentLayout({ children }: { children: React.ReactNode 
           {/* 좌측 로고 */}
           <Group gap={8}>
             <Image src={ASSETS.question} alt="logo" width={28} height={28} />
-            <Text size="lg" fw={800} c="white" style={{ letterSpacing: -0.5 }}>
+            <Text size="lg" fw={800} c="white" visibleFrom="xs" style={{ letterSpacing: -0.5 }}>
               독서 질문
             </Text>
           </Group>
@@ -97,7 +97,7 @@ export default function StudentLayout({ children }: { children: React.ReactNode 
                 }}
               >
                 <Image src={item.icon} alt={item.label} width={18} height={18} />
-                <Text size="sm">{item.label}</Text>
+                <Text size="sm" visibleFrom="xs">{item.label}</Text>
               </UnstyledButton>
             ))}
 
@@ -131,7 +131,7 @@ export default function StudentLayout({ children }: { children: React.ReactNode 
                   >
                     <Image src={ASSETS.student} alt="student" width={22} height={22} />
                   </Box>
-                  <Box>
+                  <Box visibleFrom="xs">
                     <Text size="xs" fw={600} lh={1.2}>{profile?.name || '학생'}</Text>
                     <Text size="xs" opacity={0.75} lh={1.2}>{profile?.class_name}</Text>
                   </Box>

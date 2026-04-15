@@ -64,8 +64,9 @@ export default function LoginPage() {
         }}
       />
 
-      {/* 우측 상단 학교 로고 */}
+      {/* 우측 상단 학교 로고 (모바일 숨김) */}
       <Box
+        visibleFrom="sm"
         style={{
           position: 'absolute',
           top: 20,

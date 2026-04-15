@@ -20,6 +20,7 @@ import {
   Loader,
   Tooltip,
   Accordion,
+  SimpleGrid,
 } from '@mantine/core';
 import {
   IconSend,
@@ -240,7 +241,7 @@ export default function QuestionForm({
               아래에서 질문 유형을 선택해주세요
             </Text>
 
-            <Group gap="md" grow>
+            <SimpleGrid cols={{ base: 1, xs: 3 }} spacing="md">
               {QUESTION_TYPES.map((type) => {
                 const Icon = type.icon;
                 const isSelected = selectedType === type.value;
@@ -267,6 +268,7 @@ export default function QuestionForm({
                           ? `var(--mantine-color-${type.color}-0)`
                           : 'white',
                         textAlign: 'center',
+                        cursor: 'pointer',
                       }}
                     >
                       <Stack align="center" gap="xs">
@@ -309,7 +311,7 @@ export default function QuestionForm({
                   </Tooltip>
                 );
               })}
-            </Group>
+            </SimpleGrid>
           </Paper>
 
           {error && (
