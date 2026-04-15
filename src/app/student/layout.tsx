@@ -3,20 +3,21 @@
 import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import {
   AppShell,
   Group,
   Text,
   UnstyledButton,
   Box,
-  Avatar,
   Menu,
   Loader,
   Center,
 } from '@mantine/core';
-import { IconBook2, IconHistory, IconLogout, IconUser } from '@tabler/icons-react';
+import { IconLogout } from '@tabler/icons-react';
 import { createClient } from '@/lib/supabase/client';
 import { logout } from '@/actions/auth';
+import { ASSETS } from '@/lib/assets';
 
 export default function StudentLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -43,78 +44,96 @@ export default function StudentLayout({ children }: { children: React.ReactNode 
   if (loading) {
     return (
       <Center h="100vh">
-        <Loader size="lg" color="indigo" />
+        <Loader size="lg" color="violet" />
       </Center>
     );
   }
 
   const navItems = [
-    { href: '/student/books', label: '📚 책 목록', icon: IconBook2 },
-    { href: '/student/history', label: '📋 내 기록', icon: IconHistory },
+    { href: '/student/books', label: '책 목록', icon: ASSETS.books },
+    { href: '/student/history', label: '내 기록', icon: ASSETS.book },
   ];
 
   return (
-    <AppShell
-      header={{ height: 64 }}
-      padding="md"
-    >
+    <AppShell header={{ height: 64 }} padding="md">
       <AppShell.Header
         style={{
-          background: 'linear-gradient(135deg, #4c6ef5, #7950f2)',
+          background: 'linear-gradient(135deg, #3b1fa8 0%, #6d28d9 60%, #7c3aed 100%)',
           border: 'none',
+          boxShadow: '0 2px 20px rgba(80,30,180,0.18)',
         }}
       >
         <Group h="100%" px="xl" justify="space-between">
-          <Group gap="sm">
-            <Text size="xl" fw={700} c="white">
-              📚 독서 질문
+          {/* 좌측 로고 */}
+          <Group gap={8}>
+            <Image src={ASSETS.question} alt="logo" width={28} height={28} />
+            <Text size="lg" fw={800} c="white" style={{ letterSpacing: -0.5 }}>
+              독서 질문
             </Text>
           </Group>
 
-          <Group gap="md">
+          {/* 우측 네비 + 프로필 */}
+          <Group gap="sm">
             {navItems.map((item) => (
               <UnstyledButton
                 key={item.href}
                 component={Link}
                 href={item.href}
                 style={{
-                  padding: '6px 16px',
-                  borderRadius: 8,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 6,
+                  padding: '6px 14px',
+                  borderRadius: 10,
                   color: 'white',
                   fontWeight: pathname.startsWith(item.href) ? 700 : 400,
                   background: pathname.startsWith(item.href)
                     ? 'rgba(255,255,255,0.2)'
-                    : 'transparent',
-                  transition: 'all 0.2s',
+                    : 'rgba(255,255,255,0.07)',
+                  border: pathname.startsWith(item.href)
+                    ? '1.5px solid rgba(255,255,255,0.35)'
+                    : '1.5px solid transparent',
+                  transition: 'all 0.18s',
                 }}
               >
+                <Image src={item.icon} alt={item.label} width={18} height={18} />
                 <Text size="sm">{item.label}</Text>
               </UnstyledButton>
             ))}
 
-            <Menu shadow="md" width={200}>
+            {/* 프로필 드롭다운 */}
+            <Menu shadow="xl" width={200} radius="md">
               <Menu.Target>
                 <UnstyledButton
                   style={{
                     display: 'flex',
                     alignItems: 'center',
                     gap: 8,
-                    padding: '4px 12px',
-                    borderRadius: 20,
+                    padding: '4px 12px 4px 6px',
+                    borderRadius: 24,
                     background: 'rgba(255,255,255,0.15)',
+                    border: '1.5px solid rgba(255,255,255,0.25)',
                     color: 'white',
+                    transition: 'background 0.18s',
                   }}
                 >
-                  <Avatar size={28} radius="xl" color="white" variant="filled">
-                    <IconUser size={16} />
-                  </Avatar>
+                  <Box
+                    style={{
+                      width: 32,
+                      height: 32,
+                      borderRadius: '50%',
+                      overflow: 'hidden',
+                      background: 'rgba(255,255,255,0.2)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <Image src={ASSETS.student} alt="student" width={22} height={22} />
+                  </Box>
                   <Box>
-                    <Text size="xs" fw={600} lh={1.2}>
-                      {profile?.name || '학생'}
-                    </Text>
-                    <Text size="xs" opacity={0.8} lh={1.2}>
-                      {profile?.class_name}
-                    </Text>
+                    <Text size="xs" fw={600} lh={1.2}>{profile?.name || '학생'}</Text>
+                    <Text size="xs" opacity={0.75} lh={1.2}>{profile?.class_name}</Text>
                   </Box>
                 </UnstyledButton>
               </Menu.Target>
@@ -138,7 +157,12 @@ export default function StudentLayout({ children }: { children: React.ReactNode 
         </Group>
       </AppShell.Header>
 
-      <AppShell.Main style={{ background: 'transparent' }}>
+      <AppShell.Main
+        style={{
+          background: 'linear-gradient(160deg, #f0ebff 0%, #ede9fe 40%, #e8e0ff 100%)',
+          minHeight: 'calc(100vh - 64px)',
+        }}
+      >
         {children}
       </AppShell.Main>
     </AppShell>
