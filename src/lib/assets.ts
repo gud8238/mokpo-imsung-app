@@ -7,4 +7,5 @@ export const ASSETS = {
   books: `${STORAGE_BASE}/books.png`,
   book: `${STORAGE_BASE}/book.png`,
   student: `${STORAGE_BASE}/student.png`,
+  imsung: `${STORAGE_BASE}/imsung.png`,
 };

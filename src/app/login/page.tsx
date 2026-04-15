@@ -13,6 +13,7 @@ import {
   Alert,
   Box,
   Center,
+  Group,
 } from '@mantine/core';
 import { IconAlertCircle, IconLogin } from '@tabler/icons-react';
 import { login } from '@/actions/auth';
@@ -34,7 +35,7 @@ export default function LoginPage() {
   }
 
   return (
-    <Box style={{ minHeight: '100vh', position: 'relative', overflow: 'hidden' }}>
+    <Box style={{ minHeight: '100vh', position: 'relative', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
       {/* 배경 영상 */}
       <video
         autoPlay
@@ -58,17 +59,50 @@ export default function LoginPage() {
         style={{
           position: 'absolute',
           inset: 0,
-          background: 'linear-gradient(135deg, rgba(30,20,60,0.72) 0%, rgba(60,30,90,0.65) 100%)',
+          background: 'linear-gradient(135deg, rgba(30,20,60,0.55) 0%, rgba(60,30,90,0.45) 100%)',
           zIndex: 1,
         }}
       />
 
-      {/* 로그인 카드 */}
+      {/* 우측 상단 학교 로고 */}
+      <Box
+        style={{
+          position: 'absolute',
+          top: 20,
+          right: 28,
+          zIndex: 3,
+          display: 'flex',
+          alignItems: 'center',
+          gap: 10,
+        }}
+      >
+        <Box
+          style={{
+            width: 44,
+            height: 44,
+            borderRadius: 12,
+            overflow: 'hidden',
+            background: 'rgba(255,255,255,0.2)',
+            backdropFilter: 'blur(8px)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            border: '1px solid rgba(255,255,255,0.3)',
+          }}
+        >
+          <Image src={ASSETS.imsung} alt="목포임성초" width={36} height={36} style={{ objectFit: 'contain' }} />
+        </Box>
+        <Text fw={700} size="md" style={{ color: '#fff', textShadow: '0 1px 8px rgba(0,0,0,0.5)' }}>
+          목포임성초등학교
+        </Text>
+      </Box>
+
+      {/* 로그인 카드 - 가운데 */}
       <Box
         style={{
           position: 'relative',
           zIndex: 2,
-          minHeight: '100vh',
+          flex: 1,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -76,16 +110,12 @@ export default function LoginPage() {
       >
         <Container size={420}>
           <Paper
-            withBorder={false}
-            shadow="2xl"
+            shadow="xl"
             p={44}
             radius="xl"
             style={{
-              background: 'rgba(255,255,255,0.13)',
-              backdropFilter: 'blur(24px)',
-              WebkitBackdropFilter: 'blur(24px)',
-              border: '1.5px solid rgba(255,255,255,0.22)',
-              boxShadow: '0 8px 48px 0 rgba(60,20,120,0.28)',
+              background: '#ffffff',
+              boxShadow: '0 8px 48px 0 rgba(60,20,120,0.18)',
             }}
           >
             {/* 책 표지 이미지 */}
@@ -96,8 +126,8 @@ export default function LoginPage() {
                   height: 90,
                   borderRadius: 20,
                   overflow: 'hidden',
-                  boxShadow: '0 4px 24px rgba(100,60,200,0.4)',
-                  background: 'rgba(255,255,255,0.15)',
+                  boxShadow: '0 4px 24px rgba(100,60,200,0.25)',
+                  background: '#f4f0ff',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -116,11 +146,11 @@ export default function LoginPage() {
             {/* 타이틀 */}
             <Center mb={4}>
               <Image src={ASSETS.question} alt="question icon" width={28} height={28} style={{ marginRight: 8 }} />
-              <Title order={2} style={{ color: '#fff', fontWeight: 800, letterSpacing: -0.5 }}>
+              <Title order={2} style={{ color: '#1a1a2e', fontWeight: 800, letterSpacing: -0.5 }}>
                 독서 질문 활동
               </Title>
             </Center>
-            <Text size="sm" ta="center" mb="xl" style={{ color: 'rgba(255,255,255,0.7)' }}>
+            <Text size="sm" ta="center" mb="xl" c="dimmed">
               목포임성초등학교
             </Text>
 
@@ -145,11 +175,10 @@ export default function LoginPage() {
                   radius="md"
                   size="md"
                   styles={{
-                    label: { color: 'rgba(255,255,255,0.85)', fontWeight: 600, marginBottom: 4 },
+                    label: { fontWeight: 600, marginBottom: 4, color: '#333' },
                     input: {
-                      background: 'rgba(255,255,255,0.10)',
-                      border: '1px solid rgba(255,255,255,0.25)',
-                      color: '#fff',
+                      background: '#f8f7ff',
+                      border: '1px solid #e0daf0',
                     },
                   }}
                 />
@@ -162,11 +191,10 @@ export default function LoginPage() {
                   radius="md"
                   size="md"
                   styles={{
-                    label: { color: 'rgba(255,255,255,0.85)', fontWeight: 600, marginBottom: 4 },
+                    label: { fontWeight: 600, marginBottom: 4, color: '#333' },
                     input: {
-                      background: 'rgba(255,255,255,0.10)',
-                      border: '1px solid rgba(255,255,255,0.25)',
-                      color: '#fff',
+                      background: '#f8f7ff',
+                      border: '1px solid #e0daf0',
                     },
                   }}
                 />
@@ -183,7 +211,7 @@ export default function LoginPage() {
                     marginTop: 8,
                     fontWeight: 700,
                     letterSpacing: 0.5,
-                    boxShadow: '0 4px 20px rgba(100,60,200,0.4)',
+                    boxShadow: '0 4px 20px rgba(100,60,200,0.3)',
                   }}
                 >
                   로그인
@@ -191,11 +219,38 @@ export default function LoginPage() {
               </Stack>
             </form>
 
-            <Text size="xs" ta="center" mt="lg" style={{ color: 'rgba(255,255,255,0.5)' }}>
-              학생: st학년번호@imsung.school &nbsp;|&nbsp; 교사: teacher번호@imsung.school
-            </Text>
+            {/* 계정 안내 - 2줄로 분리 */}
+            <Box mt="lg" ta="center">
+              <Text size="xs" c="dimmed" lh={1.8}>
+                학생: st학년번호@imsung.school
+              </Text>
+              <Text size="xs" c="dimmed" lh={1.8}>
+                교사: teacher번호@imsung.school
+              </Text>
+            </Box>
           </Paper>
         </Container>
+      </Box>
+
+      {/* 하단 Footer */}
+      <Box
+        style={{
+          position: 'relative',
+          zIndex: 2,
+          padding: '16px 0 20px',
+          textAlign: 'center',
+        }}
+      >
+        <Text
+          size="xs"
+          style={{
+            color: '#ffffff',
+            textShadow: '0 1px 6px rgba(0,0,0,0.6)',
+            fontWeight: 500,
+          }}
+        >
+          Copyright© 목포임성초 서찬아. All rights reserved.
+        </Text>
       </Box>
     </Box>
   );
