@@ -63,7 +63,7 @@ export default function TeacherLayout({ children }: { children: React.ReactNode 
           <Group gap={8}>
             <Image src={ASSETS.question} alt="logo" width={28} height={28} />
             <Text size="lg" fw={800} c="white" style={{ letterSpacing: -0.5 }}>
-              교사 관리
+              BOOK돋움 질문도감
             </Text>
           </Group>
 

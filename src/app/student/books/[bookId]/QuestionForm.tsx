@@ -54,27 +54,27 @@ interface PreviousQuestion {
 const QUESTION_TYPES = [
   {
     value: 'factual',
-    label: '📘 사실적 질문',
-    shortLabel: '사실적',
-    description: '글에 답이 있는 질문이에요',
+    label: '📘 사실 질문',
+    shortLabel: '사실',
+    description: '책 속에서 답을 찾을 수 있는 질문',
     detail: '누가, 언제, 어디서, 무엇을 했는지 등 글에 나와있는 사실을 묻는 질문',
     color: 'blue',
     icon: IconSearch,
   },
   {
     value: 'inferential',
-    label: '🔍 추론적 질문',
-    shortLabel: '추론적',
-    description: '숨겨진 뜻을 찾는 질문이에요',
+    label: '🔍 궁금 질문',
+    shortLabel: '궁금',
+    description: '책 속의 단서를 모아 숨은 뜻을 짐작하는 질문',
     detail: '글에 직접 나와있지 않은 내용을 생각해보는 질문. 왜 그랬을까? 어떤 의미일까?',
     color: 'violet',
     icon: IconBulb,
   },
   {
     value: 'evaluative',
-    label: '💭 평가적 질문',
-    shortLabel: '평가적',
-    description: '내 생각을 말하는 질문이에요',
+    label: '💭 라면 질문',
+    shortLabel: '라면',
+    description: '새로운 상황을 상상하며 생각을 넓히는 질문',
     detail: '정해진 답이 없고 나의 생각이나 의견을 묻는 질문. 어떻게 생각하나요?',
     color: 'orange',
     icon: IconMessage,
@@ -82,9 +82,9 @@ const QUESTION_TYPES = [
 ];
 
 const TYPE_LABEL_MAP: Record<string, string> = {
-  factual: '사실적 질문',
-  inferential: '추론적 질문',
-  evaluative: '평가적 질문',
+  factual: '사실 질문',
+  inferential: '궁금 질문',
+  evaluative: '라면 질문',
 };
 
 const TYPE_COLOR_MAP: Record<string, string> = {

@@ -68,7 +68,7 @@ export default function StudentLayout({ children }: { children: React.ReactNode 
           <Group gap={8}>
             <Image src={ASSETS.question} alt="logo" width={28} height={28} />
             <Text size="lg" fw={800} c="white" visibleFrom="xs" style={{ letterSpacing: -0.5 }}>
-              독서 질문
+              BOOK돋움 질문도감
             </Text>
           </Group>
 

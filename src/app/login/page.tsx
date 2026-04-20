@@ -148,7 +148,7 @@ export default function LoginPage() {
             <Center mb={4}>
               <Image src={ASSETS.question} alt="question icon" width={28} height={28} style={{ marginRight: 8 }} />
               <Title order={2} style={{ color: '#1a1a2e', fontWeight: 800, letterSpacing: -0.5 }}>
-                독서 질문 활동
+                BOOK돋움 질문도감
               </Title>
             </Center>
             <Text size="sm" ta="center" mb="xl" c="dimmed">
