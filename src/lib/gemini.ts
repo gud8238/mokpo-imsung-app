@@ -61,7 +61,7 @@ export async function analyzeQuestion(
     evaluative: '평가적 질문',
   };
 
-  const model = genAI.getGenerativeModel({ model: 'gemma-3-27b-it' });
+  const model = genAI.getGenerativeModel({ model: 'gemma-4-26b-it' });
 
   const prompt = `${QUESTION_ANALYSIS_PROMPT}
 
@@ -130,7 +130,7 @@ export async function analyzeStudentProgress(
   studentName: string,
   questions: { text: string; type: string; date: string }[]
 ): Promise<StudentProgressResult> {
-  const model = genAI.getGenerativeModel({ model: 'gemma-3-27b-it' });
+  const model = genAI.getGenerativeModel({ model: 'gemma-4-26b-it' });
 
   const formattedQuestions = questions
     .map((q, i) => `${i + 1}. [${q.date}] 유형: ${q.type} | 질문: "${q.text}"`)
