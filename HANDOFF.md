@@ -156,9 +156,13 @@ src/
 ### 📂 지침 문서 체계 (읽는 순서)
 `CLAUDE.md` → `HANDOFF.md` → `design.md`(UI) / `skills.md`(워크플로)
 
-### ⏭️ 다음에 할 일 (미정 — 사용자 지시 대기)
-- [ ] `.env.local` 생성 후 `npm install` → `npm run dev` 로 실제 구동 확인
-- [ ] (사용자가 요청할 기능/수정 작업)
+### ⏭️ 다음에 할 일
+- [x] Gemini API 키 `.env.local`에 저장, Netlify 환경변수 등록 완료
+- [x] GitHub Actions CD 파이프라인 구성 (`.github/workflows/netlify-deploy.yml`)
+- [x] Netlify 사이트 생성: https://mokpo-imsung-app.netlify.app (ID: 3ab968bf-1ada-4e83-b475-f93a565bb356)
+- [ ] **⚠️ 사용자 작업 필요**: GitHub Secrets 5개 등록 (아래 §10 참고)
+- [ ] **⚠️ 사용자 작업 필요**: Supabase ANON KEY 발급 후 `.env.local` + GitHub Secret + Netlify 환경변수에 등록
+- [ ] (이후 기능/수정 작업)
 
 > **새 세션 시작 시 체크리스트**
 > 1. 이 `HANDOFF.md` 읽기
@@ -168,8 +172,26 @@ src/
 
 ---
 
-## 10. 참고 링크
+## 10. GitHub Secrets 등록 (CD 파이프라인 활성화 필수)
+
+> 아래 주소에서 한 번만 등록하면 이후 git push 할 때마다 자동 배포됩니다.
+> **등록 주소**: https://github.com/gud8238/mokpo-imsung-app/settings/secrets/actions
+
+| Secret 이름 | 값 참조처 |
+| --- | --- |
+| `NETLIFY_AUTH_TOKEN` | `C:\Users\목포AISW\AppData\Roaming\netlify\Config\config.json` → `auth.token` |
+| `NETLIFY_SITE_ID` | Netlify 대시보드 → 사이트 설정 → Site ID (또는 `netlify status`) |
+| `GEMINI_API_KEY` | `.env.local` 참조 |
+| `NEXT_PUBLIC_SUPABASE_URL` | `.env.local` 참조 |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase 대시보드 → 프로젝트 설정 → API → `anon public` 키 |
+
+> ⚠️ `NEXT_PUBLIC_SUPABASE_ANON_KEY` 없이는 빌드는 성공하더라도 로그인/DB 기능 전체 불가.
+> ⚠️ 실제 키 값은 절대 이 문서(HANDOFF.md)나 코드에 직접 기재하지 말 것 — `.env.local`(git 제외) 또는 GitHub Secrets에만 보관.
+
+## 11. 참고 링크
 
 - GitHub: https://github.com/gud8238/mokpo-imsung-app
+- Netlify 사이트: https://mokpo-imsung-app.netlify.app
+- Netlify 대시보드: https://app.netlify.com/projects/mokpo-imsung-app
 - Supabase 프로젝트 ref: `wglnrealznvbvybcoaja`
 - 프로젝트 메모리: `C:\Users\목포AISW\.claude\projects\C--Users---AISW-Desktop-claude-code-mokpo-imsung-reading-ai\memory\`
