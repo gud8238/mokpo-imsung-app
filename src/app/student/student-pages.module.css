@@ -5,6 +5,7 @@
 .gridCard { height: 100%; overflow: hidden; transition: transform .22s ease, box-shadow .22s ease; }
 .gridCard:hover { transform: translateY(-6px) rotateX(1deg); box-shadow: 0 22px 42px rgba(67,53,122,.18); }
 .bookCover { border-radius: 10px 15px 15px 10px; box-shadow: -6px 10px 18px rgba(50,44,82,.2); }
+.bookCoverFrame { aspect-ratio: 3 / 4; }
 .questionStage { margin-bottom: 18px; }
 .historyItem { position: relative; overflow: hidden; }
 .feedback { background: rgba(246,248,255,.96); }

@@ -257,6 +257,7 @@ export default function StudentQuestionsView({
                         <Group gap={4}>
                           <Tooltip label="피드백 작성">
                             <ActionIcon
+                              aria-label="피드백 작성"
                               variant="light"
                               color="indigo"
                               size="sm"
@@ -270,6 +271,7 @@ export default function StudentQuestionsView({
                           </Tooltip>
                           <Tooltip label="질문 삭제">
                             <ActionIcon
+                              aria-label="질문 삭제"
                               variant="light"
                               color="red"
                               size="sm"
@@ -325,13 +327,14 @@ export default function StudentQuestionsView({
       <Modal
         opened={feedbackOpened}
         onClose={closeFeedback}
-        title="📝 피드백 작성"
+        title={<Title order={2} size="h3">📝 피드백 작성</Title>}
         radius="lg"
         centered
       >
         <StorySurface tone="teacher" p="md" radius="lg">
         <Stack gap="md">
           <Textarea
+            aria-label="학생에게 전할 피드백"
             value={feedbackText}
             onChange={(e) => setFeedbackText(e.target.value)}
             placeholder="학생에게 따뜻한 피드백을 작성해주세요..."
@@ -356,7 +359,7 @@ export default function StudentQuestionsView({
       <Modal
         opened={aiModalOpened}
         onClose={closeAiModal}
-        title={<Group><IconWand size={20} color="#7950f2"/><Text fw={700}>AI 질문 수준 진단</Text></Group>}
+        title={<Group gap="xs"><IconWand size={20} color="#7950f2"/><Title order={2} size="h3">AI 질문 수준 진단</Title></Group>}
         radius="lg"
         size="lg"
         centered
@@ -365,15 +368,15 @@ export default function StudentQuestionsView({
           <StorySurface tone="teacher" p="md" radius="lg">
           <Stack gap="md">
             <Box p="md" style={{ background: 'rgba(232,241,252,.96)', borderRadius: 12 }}>
-              <Title order={5} c="indigo.7" mb="xs">총평</Title>
+              <Title order={3} size="h5" c="indigo.7" mb="xs">총평</Title>
               <Text size="sm" style={{ lineHeight: 1.6 }}>{aiResult.summary}</Text>
             </Box>
             <Box p="md" style={{ background: 'rgba(242,249,245,.96)', borderRadius: 12 }}>
-              <Title order={5} c="green.7" mb="xs">잘하고 있는 점</Title>
+              <Title order={3} size="h5" c="green.7" mb="xs">잘하고 있는 점</Title>
               <Text size="sm" style={{ lineHeight: 1.6 }}>{aiResult.strengths}</Text>
             </Box>
             <Box p="md" style={{ background: 'rgba(255,248,222,.96)', borderRadius: 12 }}>
-              <Title order={5} c="yellow.8" mb="xs">앞으로의 발전 방향</Title>
+              <Title order={3} size="h5" c="yellow.8" mb="xs">앞으로의 발전 방향</Title>
               <Text size="sm" style={{ lineHeight: 1.6 }}>{aiResult.areas_for_improvement}</Text>
             </Box>
             

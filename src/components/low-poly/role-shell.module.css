@@ -5,6 +5,26 @@
   backdrop-filter: blur(14px);
 }
 
+.skipLink {
+  position: fixed;
+  z-index: 20;
+  top: 8px;
+  left: 8px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #202a40;
+  font-weight: 800;
+  text-decoration: none;
+  transform: translateY(-160%);
+}
+
+.skipLink:focus-visible {
+  transform: translateY(0);
+  outline: 3px solid #ffd43b;
+  outline-offset: 2px;
+}
+
 .studentHeader {
   background: linear-gradient(100deg, rgba(63, 43, 131, 0.97), rgba(114, 89, 217, 0.92));
 }

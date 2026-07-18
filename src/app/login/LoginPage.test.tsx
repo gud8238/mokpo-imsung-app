@@ -48,6 +48,6 @@ describe('LoginPage', () => {
   it('keeps the mobile footer below the expanded login content', () => {
     const styles = readFileSync('src/app/login/login.module.css', 'utf8');
 
-    expect(styles).toMatch(/@media \(max-width: 36em\) \{[\s\S]*?\.footer \{[\s\S]*?position: absolute;[\s\S]*?bottom: 16px;[\s\S]*?padding-inline: 16px;[\s\S]*?box-sizing: border-box;[\s\S]*?\}/);
+    expect(styles).toMatch(/@media \(max-width: 36em\) \{[\s\S]*?\.footer \{[\s\S]*?position: absolute;[\s\S]*?bottom: max\(16px, env\(safe-area-inset-bottom\)\);[\s\S]*?padding-inline: 16px;[\s\S]*?box-sizing: border-box;[\s\S]*?\}/);
   });
 });

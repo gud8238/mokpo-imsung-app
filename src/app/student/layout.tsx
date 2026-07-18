@@ -59,6 +59,7 @@ export default function StudentLayout({ children }: { children: React.ReactNode 
 
   return (
     <AppShell header={{ height: 64 }} padding="md">
+      <a href="#student-main" className={classes.skipLink}>본문으로 건너뛰기</a>
       <AppShell.Header className={`${classes.header} ${classes.studentHeader}`}>
         <Group h="100%" px="xl" justify="space-between">
           {/* 좌측 로고 */}
@@ -140,7 +141,7 @@ export default function StudentLayout({ children }: { children: React.ReactNode 
         </Group>
       </AppShell.Header>
 
-      <AppShell.Main>
+      <AppShell.Main id="student-main">
         <LowPolyBackdrop variant="student" scene={false}>
           {children}
         </LowPolyBackdrop>

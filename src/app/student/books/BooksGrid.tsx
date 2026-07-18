@@ -64,18 +64,20 @@ export default function BooksGrid({
                 radius="lg"
                 style={{ cursor: 'pointer' }}
               >
-              <Box mb="md">
+              <Box mb="md" className={classes.bookCoverFrame}>
                 {book.cover_image_url ? (
                   <Image
                     src={book.cover_image_url}
-                    height={200}
+                    w="100%"
+                    h="100%"
                     alt={book.title}
                     fit="cover"
+                    loading="lazy"
                     className={classes.bookCover}
                   />
                 ) : (
                   <Box
-                    h={200}
+                    h="100%"
                     className={classes.bookCover}
                     style={{
                       background: 'linear-gradient(135deg, #e8f4fd, #f0e6ff)',

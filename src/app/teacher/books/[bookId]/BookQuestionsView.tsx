@@ -188,6 +188,7 @@ export default function BookQuestionsView({
                   <Group gap={4}>
                     <Tooltip label="피드백 작성">
                       <ActionIcon
+                        aria-label="피드백 작성"
                         variant="light"
                         color="indigo"
                         size="sm"
@@ -201,6 +202,7 @@ export default function BookQuestionsView({
                     </Tooltip>
                     <Tooltip label="질문 삭제">
                       <ActionIcon
+                        aria-label="질문 삭제"
                         variant="light"
                         color="red"
                         size="sm"
@@ -259,6 +261,7 @@ export default function BookQuestionsView({
         <StorySurface tone="teacher" p="md" radius="lg">
         <Stack gap="md">
           <Textarea
+            aria-label="학생에게 전할 피드백"
             value={feedbackText}
             onChange={(e) => setFeedbackText(e.target.value)}
             placeholder="학생에게 따뜻한 피드백을 작성해주세요..."

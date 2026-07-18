@@ -189,7 +189,7 @@ export default function QuestionForm({
             </Box>
           )}
           <Box style={{ flex: 1 }}>
-            <Title order={3} c="dark.7" mb={4}>
+            <Title order={1} size="h3" c="dark.7" mb={4}>
               {book.title}
             </Title>
             {book.author && (
@@ -211,14 +211,19 @@ export default function QuestionForm({
         <Stack gap="lg">
           <StorySurface tone="student" radius="lg" p="xl" className={classes.questionStage}>
             <Text className={classes.eyebrow} size="xs">질문 씨앗 1</Text>
-            <Title order={3} className={classes.title} mb={4}>
+            <Title order={2} size="h3" className={classes.title} mb={4}>
               어떤 질문을 만들지 골라요
             </Title>
             <Text size="sm" c="dimmed" mb="md">
               아래에서 질문 유형을 선택해주세요
             </Text>
 
-            <SimpleGrid cols={{ base: 1, xs: 3 }} spacing="md">
+            <SimpleGrid
+              cols={{ base: 1, xs: 3 }}
+              spacing="md"
+              role="radiogroup"
+              aria-label="질문 유형"
+            >
               {QUESTION_TYPES.map((type) => {
                 const Icon = type.icon;
                 const isSelected = selectedType === type.value;
@@ -232,6 +237,10 @@ export default function QuestionForm({
                     withArrow
                   >
                     <Card
+                      component="button"
+                      type="button"
+                      role="radio"
+                      aria-checked={isSelected}
                       className={`question-type-card ${isSelected ? 'selected' : ''}`}
                       onClick={() => setSelectedType(type.value)}
                       padding="md"
@@ -293,10 +302,11 @@ export default function QuestionForm({
 
           <StorySurface tone="student" radius="lg" p="xl" className={classes.questionStage}>
             <Text className={classes.eyebrow} size="xs">질문 씨앗 2</Text>
-            <Title order={3} className={classes.title} mb="md">
+            <Title order={2} size="h3" className={classes.title} mb="md">
               책을 떠올리며 질문을 적어요
             </Title>
             <Textarea
+              aria-label="질문 내용"
               value={questionText}
               onChange={(e) => setQuestionText(e.target.value)}
               placeholder="이 책에 대해 궁금한 것을 질문으로 만들어 보세요!"

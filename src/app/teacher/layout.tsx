@@ -54,25 +54,26 @@ export default function TeacherLayout({ children }: { children: React.ReactNode 
 
   return (
     <AppShell header={{ height: 64 }} padding="md">
+      <a href="#teacher-main" className={classes.skipLink}>본문으로 건너뛰기</a>
       <AppShell.Header className={`${classes.header} ${classes.teacherHeader}`}>
-        <Group h="100%" px="xl" justify="space-between">
+        <Group h="100%" px={{ base: 'xs', sm: 'xl' }} justify="space-between" wrap="nowrap">
           {/* 좌측 로고 */}
-          <Group gap={8}>
+          <Group gap={8} wrap="nowrap">
             <LowPolyIcon name="question" size={30} alt="" />
-            <Text size="lg" fw={900} c="white">
+            <Text size="lg" fw={900} c="white" visibleFrom="xs">
               {ROLE_PRESENTATION.teacher.title}
             </Text>
           </Group>
 
           {/* 우측 네비 + 프로필 */}
-          <Group gap="sm">
+          <Group gap="xs" wrap="nowrap">
             <UnstyledButton
               component={Link}
               href="/teacher"
               className={`${classes.navItem} ${pathname === '/teacher' ? classes.navItemActive : ''}`}
             >
               <IconLayoutDashboard size={16} />
-              <Text size="sm">대시보드</Text>
+              <Text size="sm" visibleFrom="xs">대시보드</Text>
             </UnstyledButton>
 
             {/* 교사 프로필 드롭다운 */}
@@ -101,7 +102,7 @@ export default function TeacherLayout({ children }: { children: React.ReactNode 
                   >
                     <Image src={ASSETS.student} alt="teacher" width={22} height={22} />
                   </Box>
-                  <Text size="sm" fw={600}>
+                  <Text size="sm" fw={600} visibleFrom="xs">
                     {profile?.name || '교사'}
                   </Text>
                 </UnstyledButton>
@@ -126,7 +127,7 @@ export default function TeacherLayout({ children }: { children: React.ReactNode 
         </Group>
       </AppShell.Header>
 
-      <AppShell.Main>
+      <AppShell.Main id="teacher-main">
         <LowPolyBackdrop variant="teacher" scene={false}>
           {children}
         </LowPolyBackdrop>
