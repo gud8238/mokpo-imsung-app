@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { render, screen } from '@testing-library/react';
 import { MantineProvider } from '@mantine/core';
 import { vi } from 'vitest';
@@ -42,5 +43,11 @@ describe('LoginPage', () => {
     expect(password).toHaveAttribute('name', 'password');
     expect(password).toHaveAttribute('autocomplete', 'current-password');
     expect(screen.getByRole('button', { name: '탐험 시작하기' })).toBeInTheDocument();
+  });
+
+  it('keeps the mobile footer below the expanded login content', () => {
+    const styles = readFileSync('src/app/login/login.module.css', 'utf8');
+
+    expect(styles).toMatch(/@media \(max-width: 36em\) \{[\s\S]*?\.footer \{[\s\S]*?position: absolute;[\s\S]*?bottom: 16px;[\s\S]*?padding-inline: 16px;[\s\S]*?box-sizing: border-box;[\s\S]*?\}/);
   });
 });

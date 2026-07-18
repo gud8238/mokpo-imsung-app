@@ -47,4 +47,10 @@
 @media (max-width: 36em) {
   .center { padding: 24px 16px 84px; }
   .card { padding: 28px 22px; }
+  .footer {
+    position: absolute;
+    bottom: 16px;
+    padding-inline: 16px;
+    box-sizing: border-box;
+  }
 }
