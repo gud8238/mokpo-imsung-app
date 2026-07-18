@@ -33,7 +33,7 @@ export default function LoginPage() {
   }
 
   return (
-    <LowPolyBackdrop variant="login" scene>
+    <LowPolyBackdrop variant="login" scene={false}>
       <Box className={classes.schoolMark} visibleFrom="sm">
         <LowPolyIcon name="question" size={42} alt="" />
         <Text fw={800} c="white">목포임성초등학교</Text>

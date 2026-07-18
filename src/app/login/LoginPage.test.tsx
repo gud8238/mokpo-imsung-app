@@ -60,4 +60,13 @@ describe('LoginPage', () => {
     expect(loginStyles).toContain('backdrop-filter: blur(24px) saturate(130%);');
     expect(backdropStyles).toMatch(/prefers-reduced-motion:[\s\S]*\.login \.poster[\s\S]*login-forest\.webp/);
   });
+
+  it('disables only the login WebGL decoration scene', () => {
+    const page = readFileSync('src/app/login/page.tsx', 'utf8');
+
+    expect(page).toContain('<LowPolyBackdrop variant="login" scene={false}>');
+    expect(page).toContain('<Box className={classes.schoolMark} visibleFrom="sm">');
+    expect(page).toContain('<Text className={classes.footer}>');
+    expect(page).toContain('<LowPolyIcon name="book" size={84} alt="" />');
+  });
 });
