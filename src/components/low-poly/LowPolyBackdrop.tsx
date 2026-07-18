@@ -2,7 +2,7 @@
 
 import dynamic from 'next/dynamic';
 import { useReducedMotion } from 'motion/react';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { chooseSceneMode, supportsWebGL } from './scene-policy';
 import type { LowPolyBackdropProps, SceneMode } from './types';
 import classes from './low-poly.module.css';
@@ -20,12 +20,20 @@ export function LowPolyBackdrop({
 }: LowPolyBackdropProps) {
   const reducedMotion = Boolean(useReducedMotion());
   const [mode, setMode] = useState<SceneMode>('static');
+  const webGLAvailability = useRef<boolean | null>(null);
 
   useEffect(() => {
     const update = () => {
+      const canUseWebGL = scene && !reducedMotion &&
+        document.visibilityState === 'visible' && window.innerWidth >= 768;
+
+      if (canUseWebGL && webGLAvailability.current === null) {
+        webGLAvailability.current = supportsWebGL();
+      }
+
       setMode(chooseSceneMode({
         reducedMotion,
-        webGLAvailable: supportsWebGL(),
+        webGLAvailable: canUseWebGL ? webGLAvailability.current ?? false : false,
         viewportWidth: window.innerWidth,
         documentVisible: document.visibilityState === 'visible',
       }));
@@ -37,7 +45,7 @@ export function LowPolyBackdrop({
       window.removeEventListener('resize', update);
       document.removeEventListener('visibilitychange', update);
     };
-  }, [reducedMotion]);
+  }, [reducedMotion, scene]);
 
   return (
     <div className={`${classes.backdrop} ${classes[variant]} ${className ?? ''}`}>

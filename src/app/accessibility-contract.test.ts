@@ -36,6 +36,35 @@ describe('low-poly accessibility contract', () => {
     }
   });
 
+  it('keeps teacher icon actions at a touch-friendly size', () => {
+    for (const path of [
+      'src/app/teacher/books/[bookId]/BookQuestionsView.tsx',
+      'src/app/teacher/students/[studentId]/StudentQuestionsView.tsx',
+    ]) {
+      expect(source(path)).toContain('size="xl"');
+    }
+  });
+
+  it('keeps post-hero headings sequential without shrinking their visual hierarchy', () => {
+    const dashboard = source('src/app/teacher/TeacherDashboard.tsx');
+    const history = source('src/app/student/history/HistoryView.tsx');
+
+    expect(dashboard).not.toContain('<Title order={4} className={classes.title}>');
+    expect(dashboard).toContain('<Title order={2} size="h4" className={classes.title}>학급별 질문 유형 통계</Title>');
+    expect(history).not.toContain('<Title order={3} className={classes.title} mt="md">');
+    expect(history).toContain('<Title order={2} size="h3" className={classes.title} mt="md">');
+  });
+
+  it('uses targeted transitions for question choices and their icon treatment', () => {
+    const globals = source('src/app/globals.css');
+    const form = source('src/app/student/books/[bookId]/QuestionForm.tsx');
+
+    expect(globals).not.toContain('transition: all 0.3s ease;');
+    expect(globals).toContain('transition: transform 0.3s ease, border-color 0.3s ease, background-color 0.3s ease;');
+    expect(form).not.toContain("transition: 'all 0.3s'");
+    expect(form).toContain("transition: 'background-color 0.3s ease, color 0.3s ease'");
+  });
+
   it('keeps student diagnostic modal headings in sequence', () => {
     const view = source('src/app/teacher/students/[studentId]/StudentQuestionsView.tsx');
 

@@ -1,5 +1,9 @@
-import { describe, expect, it } from 'vitest';
-import { chooseSceneMode } from './scene-policy';
+import { afterEach, describe, expect, it, vi } from 'vitest';
+import { chooseSceneMode, supportsWebGL } from './scene-policy';
+
+afterEach(() => {
+  vi.restoreAllMocks();
+});
 
 describe('chooseSceneMode', () => {
   it('uses a static poster when reduced motion is requested', () => {
@@ -42,5 +46,16 @@ describe('chooseSceneMode', () => {
       viewportWidth: 1440,
       documentVisible: false,
     })).toBe('css');
+  });
+
+  it('releases the short-lived WebGL probe context after capability detection', () => {
+    const loseContext = vi.fn();
+    const getExtension = vi.fn().mockReturnValue({ loseContext });
+    const getContext = vi.fn().mockReturnValue({ getExtension });
+    vi.spyOn(document, 'createElement').mockReturnValue({ getContext } as unknown as HTMLCanvasElement);
+
+    expect(supportsWebGL()).toBe(true);
+    expect(getExtension).toHaveBeenCalledWith('WEBGL_lose_context');
+    expect(loseContext).toHaveBeenCalledOnce();
   });
 });

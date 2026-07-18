@@ -46,7 +46,7 @@ export default function HistoryView({ questions }: { questions: any[] }) {
         </StorySurface>
         <StorySurface tone="student" p="xl" radius="lg" ta="center">
           <IconHistory size={48} color="gray" style={{ opacity: 0.5 }} />
-          <Title order={3} className={classes.title} mt="md">
+          <Title order={2} size="h3" className={classes.title} mt="md">
             아직 작성한 질문이 없어요
           </Title>
           <Text c="dimmed" size="sm" mt="xs">

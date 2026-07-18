@@ -191,13 +191,13 @@ export default function BookQuestionsView({
                         aria-label="피드백 작성"
                         variant="light"
                         color="indigo"
-                        size="sm"
+                        size="xl"
                         onClick={() => {
                           setSelectedQuestionId(q.id);
                           openFeedback();
                         }}
                       >
-                        <IconMessagePlus size={14} />
+                        <IconMessagePlus size={20} />
                       </ActionIcon>
                     </Tooltip>
                     <Tooltip label="질문 삭제">
@@ -205,10 +205,10 @@ export default function BookQuestionsView({
                         aria-label="질문 삭제"
                         variant="light"
                         color="red"
-                        size="sm"
+                        size="xl"
                         onClick={() => handleDelete(q.id)}
                       >
-                        <IconTrash size={14} />
+                        <IconTrash size={20} />
                       </ActionIcon>
                     </Tooltip>
                   </Group>
