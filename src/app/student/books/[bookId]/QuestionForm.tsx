@@ -162,9 +162,6 @@ export default function QuestionForm({
         radius="lg"
         p="lg"
         mb="xl"
-        style={{
-          background: 'linear-gradient(135deg, rgba(76,110,245,0.05), rgba(121,80,242,0.05))',
-        }}
       >
         <Group align="flex-start" gap="lg">
           {book.cover_image_url ? (
@@ -341,8 +338,7 @@ export default function QuestionForm({
           </Button>
 
           {loading && (
-            <StorySurface tone="student" p="lg" radius="lg" ta="center" className="loading-pulse"
-              style={{ background: 'rgba(76,110,245,0.05)' }}>
+            <StorySurface tone="student" p="lg" radius="lg" ta="center" className="loading-pulse">
               <Loader size="sm" color="indigo" mb="sm" />
               <Text size="sm" c="dimmed">
                 AI 선생님이 여러분의 질문을 열심히 분석하고 있어요! 잠시만 기다려주세요... 🔍
@@ -364,8 +360,8 @@ export default function QuestionForm({
                   ? 'var(--mantine-color-green-3)'
                   : 'var(--mantine-color-yellow-3)',
                 background: aiResult.is_correct
-                  ? 'linear-gradient(135deg, rgba(64,192,87,0.05), rgba(64,192,87,0.02))'
-                  : 'linear-gradient(135deg, rgba(255,212,59,0.08), rgba(255,212,59,0.02))',
+                  ? 'linear-gradient(135deg, #f0fff4, #f8fff9)'
+                  : 'linear-gradient(135deg, #fff9db, #fffdf4)',
               }}
             >
               <Text className={classes.eyebrow} size="xs">생각이 자랐어요</Text>
@@ -514,8 +510,7 @@ export default function QuestionForm({
                         {q.question_text}
                       </Text>
                       {parsedFeedback && (
-                        <Paper p="sm" radius="md"
-                          style={{ background: 'rgba(76,110,245,0.05)' }}>
+                        <Paper p="sm" radius="md" className={classes.feedback}>
                           <Text size="xs" c="indigo.6" fw={600} mb={4}>
                             🤖 AI 피드백
                           </Text>

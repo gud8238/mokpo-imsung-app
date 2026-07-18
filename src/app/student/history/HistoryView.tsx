@@ -127,8 +127,7 @@ export default function HistoryView({ questions }: { questions: any[] }) {
                         </Text>
 
                         {aiFeedback && (
-                          <Paper p="sm" radius="md" className={classes.feedback}
-                            style={{ background: 'rgba(76,110,245,0.05)' }}>
+                          <Paper p="sm" radius="md" className={classes.feedback}>
                             <Group gap="xs" mb={4}>
                               <Text size="xs" c="indigo.6" fw={600}>
                                 🤖 AI 피드백
