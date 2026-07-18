@@ -7,7 +7,6 @@ import {
   Container,
   Title,
   Text,
-  Card,
   Badge,
   Group,
   Stack,
@@ -33,6 +32,8 @@ import {
   IconDownload,
 } from '@tabler/icons-react';
 import { deleteQuestion, submitFeedback, evaluateStudentQuestions } from '@/actions/questions';
+import { StorySurface } from '@/components/low-poly';
+import classes from '../../teacher-pages.module.css';
 
 const TYPE_LABEL: Record<string, string> = {
   factual: '사실적 질문',
@@ -151,7 +152,7 @@ export default function StudentQuestionsView({
   }
 
   return (
-    <Container size="md" py="xl">
+    <Container size="md" className={classes.page}>
       <Button
         component={Link}
         href="/teacher"
@@ -163,9 +164,9 @@ export default function StudentQuestionsView({
         대시보드로
       </Button>
 
-      {/* Student info */}
-      <Paper shadow="sm" radius="lg" p="lg" mb="xl"
-        style={{ background: 'linear-gradient(135deg, rgba(76,110,245,0.05), rgba(121,80,242,0.05))' }}>
+      <StorySurface tone="teacher" className={classes.hero} radius="xl">
+        <Text className={classes.eyebrow} size="xs">오늘의 학생 관찰</Text>
+        <Title order={1} className={classes.title} mb="md">학생 생각 성장 기록</Title>
         <Group gap="md">
           <Avatar size={56} radius="xl" color="indigo" variant="light">
             <IconUser size={28} />
@@ -195,7 +196,7 @@ export default function StudentQuestionsView({
             </Button>
           </Group>
         </Group>
-      </Paper>
+      </StorySurface>
 
       {message && (
         <Alert
@@ -211,13 +212,13 @@ export default function StudentQuestionsView({
       )}
 
       {questions.length === 0 ? (
-        <Card p="xl" radius="lg" withBorder ta="center">
+        <StorySurface tone="teacher" p="xl" radius="lg" ta="center">
           <Text c="dimmed" size="lg">이 학생은 아직 질문을 작성하지 않았습니다.</Text>
-        </Card>
+        </StorySurface>
       ) : (
         <Stack gap="lg">
           {Object.values(bookGroups).map(({ book, questions: bookQuestions }) => (
-            <Card key={book.id} shadow="sm" radius="lg" p="lg" withBorder>
+            <StorySurface key={book.id} tone="teacher" radius="lg" p="lg" className={classes.listItem}>
               <Group mb="md" gap="sm">
                 <IconBook size={20} color="#7950f2" />
                 <Text fw={600} size="lg" c="dark.7">{book.title}</Text>
@@ -234,7 +235,7 @@ export default function StudentQuestionsView({
                   } catch { /* ignore */ }
 
                   return (
-                    <Paper key={q.id} p="md" radius="md" withBorder>
+                    <StorySurface key={q.id} tone="teacher" p="md" radius="md">
                       <Group justify="space-between" mb="xs">
                         <Group gap="xs">
                           <Badge color={TYPE_COLOR[q.question_type]} variant="light" size="sm">
@@ -302,8 +303,7 @@ export default function StudentQuestionsView({
                       {q.teacher_feedbacks?.length > 0 && (
                         <Stack gap={4} mt="xs">
                           {q.teacher_feedbacks.map((fb: any) => (
-                            <Paper key={fb.id} p="xs" radius="sm"
-                              style={{ background: 'rgba(64,192,87,0.06)' }}>
+                            <Paper key={fb.id} p="xs" radius="sm" className={classes.feedback}>
                               <Text size="xs" c="green.7" fw={600} mb={2}>
                                 ✏️ {fb.profiles?.name || '교사'} 피드백
                               </Text>
@@ -312,11 +312,11 @@ export default function StudentQuestionsView({
                           ))}
                         </Stack>
                       )}
-                    </Paper>
+                    </StorySurface>
                   );
                 })}
               </Stack>
-            </Card>
+            </StorySurface>
           ))}
         </Stack>
       )}
@@ -329,6 +329,7 @@ export default function StudentQuestionsView({
         radius="lg"
         centered
       >
+        <StorySurface tone="teacher" p="md" radius="lg">
         <Stack gap="md">
           <Textarea
             value={feedbackText}
@@ -348,6 +349,7 @@ export default function StudentQuestionsView({
             피드백 등록
           </Button>
         </Stack>
+        </StorySurface>
       </Modal>
 
       {/* AI AI Diagnosis Modal */}
@@ -360,16 +362,17 @@ export default function StudentQuestionsView({
         centered
       >
         {aiResult && (
+          <StorySurface tone="teacher" p="md" radius="lg">
           <Stack gap="md">
-            <Box p="md" style={{ background: 'rgba(76,110,245,0.05)', borderRadius: 12 }}>
+            <Box p="md" style={{ background: 'rgba(232,241,252,.96)', borderRadius: 12 }}>
               <Title order={5} c="indigo.7" mb="xs">총평</Title>
               <Text size="sm" style={{ lineHeight: 1.6 }}>{aiResult.summary}</Text>
             </Box>
-            <Box p="md" style={{ background: 'rgba(64,192,87,0.05)', borderRadius: 12 }}>
+            <Box p="md" style={{ background: 'rgba(242,249,245,.96)', borderRadius: 12 }}>
               <Title order={5} c="green.7" mb="xs">잘하고 있는 점</Title>
               <Text size="sm" style={{ lineHeight: 1.6 }}>{aiResult.strengths}</Text>
             </Box>
-            <Box p="md" style={{ background: 'rgba(250,176,5,0.05)', borderRadius: 12 }}>
+            <Box p="md" style={{ background: 'rgba(255,248,222,.96)', borderRadius: 12 }}>
               <Title order={5} c="yellow.8" mb="xs">앞으로의 발전 방향</Title>
               <Text size="sm" style={{ lineHeight: 1.6 }}>{aiResult.areas_for_improvement}</Text>
             </Box>
@@ -386,6 +389,7 @@ export default function StudentQuestionsView({
               📄 결과 보고서 다운로드 (HWPX)
             </Button>
           </Stack>
+          </StorySurface>
         )}
       </Modal>
     </Container>

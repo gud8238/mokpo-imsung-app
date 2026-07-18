@@ -7,7 +7,6 @@ import {
   Container,
   Title,
   Text,
-  Card,
   Badge,
   Group,
   Stack,
@@ -30,6 +29,8 @@ import {
   IconUser,
 } from '@tabler/icons-react';
 import { deleteQuestion, submitFeedback } from '@/actions/questions';
+import { StorySurface } from '@/components/low-poly';
+import classes from '../../teacher-pages.module.css';
 
 const TYPE_LABEL: Record<string, string> = {
   factual: '사실적 질문',
@@ -98,7 +99,7 @@ export default function BookQuestionsView({
   };
 
   return (
-    <Container size="md" py="xl">
+    <Container size="md" className={classes.page}>
       <Button
         component={Link}
         href="/teacher"
@@ -110,9 +111,9 @@ export default function BookQuestionsView({
         대시보드로
       </Button>
 
-      {/* Book info */}
-      <Paper shadow="sm" radius="lg" p="lg" mb="xl"
-        style={{ background: 'linear-gradient(135deg, rgba(76,110,245,0.05), rgba(121,80,242,0.05))' }}>
+      <StorySurface tone="teacher" className={classes.hero} radius="xl">
+        <Text className={classes.eyebrow} size="xs">오늘의 질문 관찰</Text>
+        <Title order={1} className={classes.title} mb="xs">책 속 질문 아카이브</Title>
         <Group align="flex-start" gap="lg">
           {book.cover_image_url ? (
             <Image src={book.cover_image_url} alt={book.title} w={100} h={140} radius="md" fit="cover" />
@@ -122,7 +123,7 @@ export default function BookQuestionsView({
             </Box>
           )}
           <Box style={{ flex: 1 }}>
-            <Title order={3} c="dark.7" mb={4}>{book.title}</Title>
+            <Title order={3} className={classes.title} mb={4}>{book.title}</Title>
             {book.author && <Text size="sm" c="dimmed" mb="xs">✍️ {book.author}</Text>}
             <Group gap="xs" mt="sm">
               <Badge color="blue" variant="light" size="sm">사실적 {typeCounts.factual}</Badge>
@@ -131,7 +132,7 @@ export default function BookQuestionsView({
             </Group>
           </Box>
         </Group>
-      </Paper>
+      </StorySurface>
 
       {message && (
         <Alert
@@ -147,9 +148,9 @@ export default function BookQuestionsView({
       )}
 
       {questions.length === 0 ? (
-        <Card p="xl" radius="lg" withBorder ta="center">
+        <StorySurface tone="teacher" p="xl" radius="lg" ta="center">
           <Text c="dimmed" size="lg">이 책에 대한 질문이 아직 없습니다.</Text>
-        </Card>
+        </StorySurface>
       ) : (
         <Stack gap="sm">
           {questions.map((q: any) => {
@@ -159,7 +160,7 @@ export default function BookQuestionsView({
             } catch { /* ignore */ }
 
             return (
-              <Paper key={q.id} shadow="xs" p="md" radius="md" withBorder>
+              <StorySurface key={q.id} tone="teacher" p="md" radius="md" className={classes.listItem}>
                 <Group justify="space-between" mb="xs">
                   <Group gap="xs">
                     <Tooltip label={q.profiles?.class_name}>
@@ -232,8 +233,7 @@ export default function BookQuestionsView({
                 {q.teacher_feedbacks?.length > 0 && (
                   <Stack gap={4} mt="xs">
                     {q.teacher_feedbacks.map((fb: any) => (
-                      <Paper key={fb.id} p="xs" radius="sm"
-                        style={{ background: 'rgba(64,192,87,0.06)' }}>
+                      <Paper key={fb.id} p="xs" radius="sm" className={classes.feedback}>
                         <Text size="xs" c="green.7" fw={600} mb={2}>
                           ✏️ {fb.profiles?.name || '교사'} 피드백
                         </Text>
@@ -242,7 +242,7 @@ export default function BookQuestionsView({
                     ))}
                   </Stack>
                 )}
-              </Paper>
+              </StorySurface>
             );
           })}
         </Stack>
@@ -256,6 +256,7 @@ export default function BookQuestionsView({
         radius="lg"
         centered
       >
+        <StorySurface tone="teacher" p="md" radius="lg">
         <Stack gap="md">
           <Textarea
             value={feedbackText}
@@ -275,6 +276,7 @@ export default function BookQuestionsView({
             피드백 등록
           </Button>
         </Stack>
+        </StorySurface>
       </Modal>
     </Container>
   );
