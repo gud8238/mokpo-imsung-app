@@ -216,3 +216,6 @@ src/
 - AI 질문 진단 다운로드는 HWPX를 제거하고 `/api/download-pdf`에서 A4 PDF를 생성한다. Pretendard 한글 글꼴, 질문 유형 통계, 총평, 강점, 성장 방향, 페이지 번호를 포함한다.
 - PDF 단일 페이지 및 3페이지 장문 샘플을 Poppler로 렌더링해 한글과 페이지 전환을 검수했다.
 - Netlify CLI의 Windows 로컬 Edge Function 번들링은 드라이브 경로를 중복 조합해 실패하므로, 최종 배포는 GitHub Actions의 Ubuntu 러너에서 `netlify deploy --build --prod`로 수행한다.
+## 14. 2026-07-19 Login scene simplification
+
+- The login page now disables its WebGL scene, removing only the four rocks, two trees, and floating book. The GIF, login card icon, school mark, and copyright remain.
