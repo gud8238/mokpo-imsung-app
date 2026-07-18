@@ -1,0 +1,82 @@
+.backdrop {
+  position: relative;
+  isolation: isolate;
+  min-height: 100vh;
+  overflow: hidden;
+  color: var(--lp-text);
+}
+
+.poster,
+.polygonDrift,
+.roleOverlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+}
+
+.poster {
+  z-index: -4;
+  background-position: center;
+  background-size: cover;
+}
+
+.login .poster { background-image: url('/low-poly/login-forest.webp'); }
+.student .poster { background-image: url('/low-poly/student-trail.webp'); }
+.teacher .poster { background-image: url('/low-poly/teacher-observatory.webp'); }
+
+.polygonDrift {
+  z-index: -2;
+  opacity: 0.28;
+  background:
+    conic-gradient(from 210deg at 12% 18%, transparent 0 18%, #ffd45d 19% 24%, transparent 25%),
+    conic-gradient(from 40deg at 88% 74%, transparent 0 35%, #7259d9 36% 43%, transparent 44%);
+  animation: polygon-drift 32s ease-in-out infinite alternate;
+}
+
+.roleOverlay {
+  z-index: -1;
+}
+
+.login .roleOverlay {
+  background: linear-gradient(135deg, rgba(24, 38, 48, 0.34), rgba(66, 42, 92, 0.24));
+}
+
+.student .roleOverlay {
+  background: linear-gradient(160deg, rgba(246, 241, 255, 0.72), rgba(235, 247, 230, 0.82));
+}
+
+.teacher .roleOverlay {
+  background: linear-gradient(160deg, rgba(237, 245, 255, 0.78), rgba(230, 234, 248, 0.86));
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  min-height: inherit;
+}
+
+.surface {
+  background: var(--lp-surface);
+  border: 1px solid var(--lp-border);
+  box-shadow: 0 18px 45px rgba(41, 49, 76, 0.14);
+  backdrop-filter: blur(14px);
+}
+
+.surface_student { border-top: 3px solid #7259d9; }
+.surface_teacher { border-top: 3px solid #356b9e; }
+.surface_warm { border-top: 3px solid #ef876d; }
+.surface_neutral { border-top: 3px solid rgba(44, 54, 78, 0.12); }
+
+@keyframes polygon-drift {
+  from { transform: translate3d(-1.5%, -1%, 0) scale(1); }
+  to { transform: translate3d(1.5%, 1%, 0) scale(1.04); }
+}
+
+@media (max-width: 47.99em) {
+  .polygonDrift { opacity: 0.18; }
+  .surface { backdrop-filter: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .polygonDrift { animation: none; }
+}
