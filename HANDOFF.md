@@ -3,7 +3,7 @@
 > **목적**: 이 문서는 새로운 Claude Code 채팅 세션에서도 작업을 끊김 없이 이어가기 위한 **컨텍스트 엔지니어링(harness)** 문서입니다.
 > 새 세션을 시작하면 **가장 먼저 이 파일을 읽어** 프로젝트 전체 맥락을 파악하세요.
 
-- **최종 업데이트**: 2026-06-19
+- **최종 업데이트**: 2026-07-19
 - **작성자/소유자**: 목포임성초 서찬아 (gud8238@gmail.com)
 - **GitHub**: https://github.com/gud8238/mokpo-imsung-app
 - **로컬 경로**: `C:\Users\목포AISW\Desktop\claude-code\mokpo-imsung-reading-ai`
@@ -191,7 +191,17 @@ src/
 ## 11. 참고 링크
 
 - GitHub: https://github.com/gud8238/mokpo-imsung-app
-- Netlify 사이트: https://mokpo-imsung-app.netlify.app
-- Netlify 대시보드: https://app.netlify.com/projects/mokpo-imsung-app
+- Netlify 사이트: https://mokpo-imsung-v1.netlify.app
+- Netlify 대시보드: https://app.netlify.com/projects/mokpo-imsung-v1
 - Supabase 프로젝트 ref: `wglnrealznvbvybcoaja`
 - 프로젝트 메모리: `C:\Users\목포AISW\.claude\projects\C--Users---AISW-Desktop-claude-code-mokpo-imsung-reading-ai\memory\`
+
+## 12. 2026-07-19 저다각형 UI 개편
+
+- 모든 로그인·학생·교사 화면을 B안 하이브리드 스토리북 저다각형 UI로 개편했다.
+- 기존 Supabase 인증·질문 제출·교사 피드백·AI 분석·HWPX 다운로드 흐름은 유지했다.
+- 생성 에셋 6개와 데스크톱용 저전력 Three.js 장면을 추가했다. 모바일, 모션 감소, WebGL 실패 시 정적/CSS 장면으로 폴백한다.
+- 접근성 보강: 질문 유형 키보드 선택, 폼/아이콘 버튼 이름, 제목 계층, 본문 건너뛰기 링크, 모바일 교사 헤더를 적용했다.
+- Supabase MCP는 프로젝트 `wglnrealznvbvybcoaja`에 읽기 전용으로 연결해 스키마와 RLS를 확인했다.
+- 운영 배포 대상은 기존 `mokpo-imsung-app`이 아니라 **`mokpo-imsung-v1`**이다.
+- Netlify site ID: `8217888f-3b1e-4e42-b62c-e21bccf4353e`
