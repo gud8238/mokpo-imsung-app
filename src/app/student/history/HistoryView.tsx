@@ -4,7 +4,6 @@ import {
   Container,
   Title,
   Text,
-  Card,
   Badge,
   Group,
   Stack,
@@ -13,6 +12,8 @@ import {
   Accordion,
 } from '@mantine/core';
 import { IconHistory, IconBook, IconMessageCircle } from '@tabler/icons-react';
+import { StorySurface } from '@/components/low-poly';
+import classes from '../student-pages.module.css';
 
 const TYPE_LABEL_MAP: Record<string, string> = {
   factual: '사실적 질문',
@@ -37,16 +38,21 @@ interface AIFeedback {
 export default function HistoryView({ questions }: { questions: any[] }) {
   if (questions.length === 0) {
     return (
-      <Container size="md" py="xl">
-        <Card p="xl" radius="lg" withBorder ta="center">
+      <Container size="md" className={classes.page}>
+        <StorySurface tone="student" className={classes.hero} radius="xl">
+          <Text className={classes.eyebrow} size="xs">나의 독서 기록</Text>
+          <Title order={1} className={classes.title}>나의 독서 성장 지도</Title>
+          <Text c="dimmed">질문 씨앗을 심으며 생각이 자라는 길을 함께 살펴봐요.</Text>
+        </StorySurface>
+        <StorySurface tone="student" p="xl" radius="lg" ta="center">
           <IconHistory size={48} color="gray" style={{ opacity: 0.5 }} />
-          <Title order={3} c="dimmed" mt="md">
-            아직 질문이 없어요
+          <Title order={3} className={classes.title} mt="md">
+            아직 작성한 질문이 없어요
           </Title>
           <Text c="dimmed" size="sm" mt="xs">
-            책을 선택하고 첫 질문을 만들어 보세요! 📚
+            책을 골라 첫 번째 질문 씨앗을 심어 봐요.
           </Text>
-        </Card>
+        </StorySurface>
       </Container>
     );
   }
@@ -63,21 +69,16 @@ export default function HistoryView({ questions }: { questions: any[] }) {
   }
 
   return (
-    <Container size="md" py="xl">
-      <Group mb="xl" gap="sm">
-        <IconHistory size={28} color="#4c6ef5" />
-        <Title order={2} c="dark.7">
-          내 질문 기록
-        </Title>
-      </Group>
-
-      <Text c="dimmed" mb="lg">
-        총 {questions.length}개의 질문을 만들었어요! 🎉
-      </Text>
+    <Container size="md" className={classes.page}>
+      <StorySurface tone="student" className={classes.hero} radius="xl">
+        <Text className={classes.eyebrow} size="xs">나의 독서 기록</Text>
+        <Title order={1} className={classes.title}>나의 독서 성장 지도</Title>
+        <Text c="dimmed">총 {questions.length}개의 질문을 만들었어요! 🎉</Text>
+      </StorySurface>
 
       <Stack gap="lg">
         {Object.values(bookGroups).map(({ book, questions: bookQuestions }) => (
-          <Card key={book.id} shadow="sm" radius="lg" p="lg" withBorder>
+          <StorySurface key={book.id} tone="student" radius="lg" p="lg" className={classes.historyItem}>
             <Group mb="md" gap="sm">
               <IconBook size={20} color="#7950f2" />
               <Text fw={600} size="lg" c="dark.7">
@@ -126,7 +127,7 @@ export default function HistoryView({ questions }: { questions: any[] }) {
                         </Text>
 
                         {aiFeedback && (
-                          <Paper p="sm" radius="md"
+                          <Paper p="sm" radius="md" className={classes.feedback}
                             style={{ background: 'rgba(76,110,245,0.05)' }}>
                             <Group gap="xs" mb={4}>
                               <Text size="xs" c="indigo.6" fw={600}>
@@ -173,7 +174,7 @@ export default function HistoryView({ questions }: { questions: any[] }) {
                 );
               })}
             </Accordion>
-          </Card>
+          </StorySurface>
         ))}
       </Stack>
     </Container>

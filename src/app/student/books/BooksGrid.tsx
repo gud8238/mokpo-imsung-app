@@ -4,7 +4,6 @@ import Link from 'next/link';
 import {
   Container,
   SimpleGrid,
-  Card,
   Image,
   Text,
   Title,
@@ -12,7 +11,9 @@ import {
   Group,
   Box,
 } from '@mantine/core';
-import { IconBook, IconArrowRight } from '@tabler/icons-react';
+import { IconArrowRight } from '@tabler/icons-react';
+import { LowPolyIcon, StorySurface } from '@/components/low-poly';
+import classes from '../student-pages.module.css';
 
 interface Book {
   id: number;
@@ -30,55 +31,52 @@ export default function BooksGrid({
   studentName: string;
 }) {
   return (
-    <Container size="lg" py="xl">
-      <Box mb="xl">
-        <Title order={2} c="dark.7" mb={4}>
-          안녕하세요, {studentName}! 👋
-        </Title>
-        <Text c="dimmed" size="lg">
-          읽은 책을 선택하고 질문을 만들어 보세요
-        </Text>
-      </Box>
+    <Container size="lg" className={classes.page}>
+      <StorySurface tone="student" className={classes.hero} radius="xl">
+        <Text className={classes.eyebrow} size="xs">오늘의 독서 탐험</Text>
+        <Title order={1} className={classes.title}>어떤 책에서 질문을 발견할까요?</Title>
+        <Text c="dimmed">표지를 눌러 사실·궁금·라면 질문을 차근차근 만들어 봐요.</Text>
+        <Text size="sm" c="dimmed" mt="sm">안녕하세요, {studentName}! 👋</Text>
+      </StorySurface>
 
       {books.length === 0 ? (
-        <Card p="xl" radius="lg" withBorder ta="center">
-          <IconBook size={48} color="gray" style={{ opacity: 0.5 }} />
+        <StorySurface tone="student" p="xl" radius="lg" ta="center">
+          <LowPolyIcon name="book" size={64} alt="" />
           <Text c="dimmed" mt="md" size="lg">
-            아직 등록된 책이 없어요
+            아직 만날 수 있는 책이 없어요
           </Text>
           <Text c="dimmed" size="sm">
             선생님이 책을 등록해 주시면 여기에 나타나요!
           </Text>
-        </Card>
+        </StorySurface>
       ) : (
         <SimpleGrid cols={{ base: 1, xs: 2, sm: 3, md: 4 }} spacing="lg">
           {books.map((book) => (
-            <Card
+            <Link
               key={book.id}
-              component={Link}
               href={`/student/books/${book.id}`}
-              className="book-card"
-              shadow="sm"
-              padding="lg"
-              radius="lg"
-              withBorder
-              style={{
-                textDecoration: 'none',
-                cursor: 'pointer',
-                background: 'rgba(255,255,255,0.9)',
-              }}
+              style={{ display: 'block', textDecoration: 'none' }}
             >
-              <Card.Section>
+              <StorySurface
+                tone="student"
+                className={classes.gridCard}
+                p="lg"
+                radius="lg"
+                style={{ cursor: 'pointer' }}
+              >
+              <Box mb="md">
                 {book.cover_image_url ? (
                   <Image
                     src={book.cover_image_url}
                     height={200}
                     alt={book.title}
                     fit="cover"
+                    className={classes.bookCover}
                   />
                 ) : (
                   <Box
                     h={200}
+                    className={classes.bookCover}
                     style={{
                       background: 'linear-gradient(135deg, #e8f4fd, #f0e6ff)',
                       display: 'flex',
@@ -86,10 +84,10 @@ export default function BooksGrid({
                       justifyContent: 'center',
                     }}
                   >
-                    <IconBook size={64} color="#7950f2" style={{ opacity: 0.4 }} />
+                    <LowPolyIcon name="book" size={64} alt="" />
                   </Box>
                 )}
-              </Card.Section>
+              </Box>
 
               <Group justify="space-between" mt="md" mb="xs">
                 <Text fw={600} size="md" lineClamp={1} c="dark.7">
@@ -118,7 +116,8 @@ export default function BooksGrid({
                   질문하기
                 </Badge>
               </Group>
-            </Card>
+              </StorySurface>
+            </Link>
           ))}
         </SimpleGrid>
       )}

@@ -1,0 +1,19 @@
+.page { position: relative; padding-block: 34px 52px; }
+.hero { margin-bottom: 24px; padding: clamp(20px, 4vw, 34px); }
+.eyebrow { color: #7259d9; font-weight: 900; letter-spacing: 0.08em; text-transform: uppercase; }
+.title { color: #202a40; font-weight: 900; letter-spacing: -0.04em; }
+.gridCard { height: 100%; overflow: hidden; transition: transform .22s ease, box-shadow .22s ease; }
+.gridCard:hover { transform: translateY(-6px) rotateX(1deg); box-shadow: 0 22px 42px rgba(67,53,122,.18); }
+.bookCover { border-radius: 10px 15px 15px 10px; box-shadow: -6px 10px 18px rgba(50,44,82,.2); }
+.questionStage { margin-bottom: 18px; }
+.historyItem { position: relative; overflow: hidden; }
+.feedback { background: rgba(246,248,255,.96); }
+@media (max-width: 36em) {
+  .page { padding-block: 20px 36px; }
+  .hero { padding: 20px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gridCard { transition: none; }
+  .gridCard:hover { transform: none; }
+}

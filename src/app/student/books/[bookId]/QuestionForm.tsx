@@ -15,7 +15,6 @@ import {
   Box,
   Card,
   Badge,
-  Divider,
   Alert,
   Loader,
   Tooltip,
@@ -34,6 +33,8 @@ import {
 } from '@tabler/icons-react';
 import { submitQuestion } from '@/actions/questions';
 import type { AIAnalysisResult } from '@/lib/gemini';
+import { StorySurface } from '@/components/low-poly';
+import classes from '../../student-pages.module.css';
 
 interface Book {
   id: number;
@@ -142,7 +143,7 @@ export default function QuestionForm({
   }
 
   return (
-    <Container size="md" py="xl">
+    <Container size="md" className={classes.page}>
       {/* Back button */}
       <Button
         component={Link}
@@ -156,8 +157,8 @@ export default function QuestionForm({
       </Button>
 
       {/* Book info card */}
-      <Paper
-        shadow="sm"
+      <StorySurface
+        tone="student"
         radius="lg"
         p="lg"
         mb="xl"
@@ -206,36 +207,15 @@ export default function QuestionForm({
             )}
           </Box>
         </Group>
-      </Paper>
+      </StorySurface>
 
       {/* Question form */}
       {!submitted ? (
         <Stack gap="lg">
-          <Paper shadow="sm" radius="lg" p="xl" withBorder>
-            <Title order={4} mb="md" c="dark.7">
-              ✏️ 나의 질문
-            </Title>
-            <Textarea
-              value={questionText}
-              onChange={(e) => setQuestionText(e.target.value)}
-              placeholder="이 책에 대해 궁금한 것을 질문으로 만들어 보세요!"
-              minRows={4}
-              maxRows={8}
-              radius="md"
-              size="md"
-              autosize
-              styles={{
-                input: {
-                  fontSize: '16px',
-                  lineHeight: 1.6,
-                },
-              }}
-            />
-          </Paper>
-
-          <Paper shadow="sm" radius="lg" p="xl" withBorder>
-            <Title order={4} mb={4} c="dark.7">
-              📌 나는 이 질문이 어떤 질문이라고 생각하나요?
+          <StorySurface tone="student" radius="lg" p="xl" className={classes.questionStage}>
+            <Text className={classes.eyebrow} size="xs">질문 씨앗 1</Text>
+            <Title order={3} className={classes.title} mb={4}>
+              어떤 질문을 만들지 골라요
             </Title>
             <Text size="sm" c="dimmed" mb="md">
               아래에서 질문 유형을 선택해주세요
@@ -312,7 +292,30 @@ export default function QuestionForm({
                 );
               })}
             </SimpleGrid>
-          </Paper>
+          </StorySurface>
+
+          <StorySurface tone="student" radius="lg" p="xl" className={classes.questionStage}>
+            <Text className={classes.eyebrow} size="xs">질문 씨앗 2</Text>
+            <Title order={3} className={classes.title} mb="md">
+              책을 떠올리며 질문을 적어요
+            </Title>
+            <Textarea
+              value={questionText}
+              onChange={(e) => setQuestionText(e.target.value)}
+              placeholder="이 책에 대해 궁금한 것을 질문으로 만들어 보세요!"
+              minRows={4}
+              maxRows={8}
+              radius="md"
+              size="md"
+              autosize
+              styles={{
+                input: {
+                  fontSize: '16px',
+                  lineHeight: 1.6,
+                },
+              }}
+            />
+          </StorySurface>
 
           {error && (
             <Alert color="red" variant="light" radius="md" icon={<IconInfoCircle size={16} />}>
@@ -338,24 +341,24 @@ export default function QuestionForm({
           </Button>
 
           {loading && (
-            <Paper p="lg" radius="lg" ta="center" className="loading-pulse"
+            <StorySurface tone="student" p="lg" radius="lg" ta="center" className="loading-pulse"
               style={{ background: 'rgba(76,110,245,0.05)' }}>
               <Loader size="sm" color="indigo" mb="sm" />
               <Text size="sm" c="dimmed">
                 AI 선생님이 여러분의 질문을 열심히 분석하고 있어요! 잠시만 기다려주세요... 🔍
               </Text>
-            </Paper>
+            </StorySurface>
           )}
         </Stack>
       ) : (
         /* AI Result display */
         <Stack gap="lg" className="ai-feedback-enter">
           {aiResult && (
-            <Paper
-              shadow="md"
+            <StorySurface
+              tone="student"
               radius="lg"
               p="xl"
-              withBorder
+              className={`${classes.feedback} ${classes.questionStage}`}
               style={{
                 borderColor: aiResult.is_correct
                   ? 'var(--mantine-color-green-3)'
@@ -365,6 +368,8 @@ export default function QuestionForm({
                   : 'linear-gradient(135deg, rgba(255,212,59,0.08), rgba(255,212,59,0.02))',
               }}
             >
+              <Text className={classes.eyebrow} size="xs">생각이 자랐어요</Text>
+              <Title order={3} className={classes.title} mb="md">AI 친구의 따뜻한 피드백</Title>
               <Group mb="md" gap="sm">
                 <Box
                   style={{
@@ -439,16 +444,16 @@ export default function QuestionForm({
                   🌟 {aiResult.encouragement}
                 </Text>
               </Paper>
-            </Paper>
+            </StorySurface>
           )}
 
           {/* My question summary */}
-          <Paper shadow="sm" radius="lg" p="lg" withBorder>
+          <StorySurface tone="student" radius="lg" p="lg">
             <Text size="sm" c="dimmed" mb="xs">내가 작성한 질문</Text>
             <Text size="md" c="dark.7" style={{ lineHeight: 1.8 }}>
               &ldquo;{questionText}&rdquo;
             </Text>
-          </Paper>
+          </StorySurface>
 
           <Group grow>
             <Button
@@ -476,8 +481,7 @@ export default function QuestionForm({
 
       {/* Previous questions for this book */}
       {previousQuestions.length > 0 && (
-        <Box mt="xl">
-          <Divider my="lg" />
+        <StorySurface tone="student" mt="xl" p="lg">
           <Title order={4} c="dark.7" mb="md">
             📝 이 책에 대한 내 이전 질문들
           </Title>
@@ -529,7 +533,7 @@ export default function QuestionForm({
               );
             })}
           </Accordion>
-        </Box>
+        </StorySurface>
       )}
     </Container>
   );
