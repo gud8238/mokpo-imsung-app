@@ -5,6 +5,10 @@
   padding-block: 72px;
 }
 
+.card {
+  padding: 44px;
+}
+
 .schoolMark {
   position: fixed;
   z-index: 3;
@@ -41,5 +45,6 @@
 }
 
 @media (max-width: 36em) {
-  .center { padding: 24px 16px 56px; }
+  .center { padding: 24px 16px 84px; }
+  .card { padding: 28px 22px; }
 }

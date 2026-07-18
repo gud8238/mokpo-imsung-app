@@ -40,7 +40,7 @@ export default function LoginPage() {
       </Box>
 
       <Container size={440} className={classes.center}>
-        <StorySurface tone="warm" p={44} radius="xl">
+        <StorySurface tone="warm" radius="xl" className={classes.card} data-testid="login-card">
           <Center mb="md"><LowPolyIcon name="book" size={84} alt="" /></Center>
           <Title order={1} ta="center" className={classes.title}>생각의 숲으로 들어가요</Title>
           <Text ta="center" className={classes.subtitle}>책을 읽고 나만의 질문을 발견해요</Text>
@@ -62,6 +62,9 @@ export default function LoginPage() {
                 name="email"
                 label="아이디 (이메일)"
                 placeholder="예: st0101@imsung.school"
+                type="email"
+                autoComplete="username"
+                spellCheck={false}
                 required
                 radius="md"
                 size="md"
@@ -75,6 +78,7 @@ export default function LoginPage() {
                 name="password"
                 label="비밀번호"
                 placeholder="비밀번호를 입력하세요"
+                autoComplete="current-password"
                 required
                 radius="md"
                 size="md"

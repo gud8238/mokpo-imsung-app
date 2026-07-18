@@ -30,8 +30,17 @@ describe('LoginPage', () => {
     render(<MantineProvider><LoginPage /></MantineProvider>);
 
     expect(screen.getByRole('heading', { name: '생각의 숲으로 들어가요' })).toBeInTheDocument();
-    expect(screen.getByLabelText(/아이디 \(이메일\)/)).toHaveAttribute('name', 'email');
-    expect(screen.getByLabelText(/비밀번호/)).toHaveAttribute('name', 'password');
+    expect(screen.getByTestId('login-card')).toBeInTheDocument();
+
+    const email = screen.getByLabelText(/아이디 \(이메일\)/);
+    expect(email).toHaveAttribute('name', 'email');
+    expect(email).toHaveAttribute('type', 'email');
+    expect(email).toHaveAttribute('autocomplete', 'username');
+    expect(email).toHaveAttribute('spellcheck', 'false');
+
+    const password = screen.getByLabelText(/비밀번호/);
+    expect(password).toHaveAttribute('name', 'password');
+    expect(password).toHaveAttribute('autocomplete', 'current-password');
     expect(screen.getByRole('button', { name: '탐험 시작하기' })).toBeInTheDocument();
   });
 });
