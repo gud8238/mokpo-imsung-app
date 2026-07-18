@@ -18,6 +18,9 @@ import { IconLogout } from '@tabler/icons-react';
 import { createClient } from '@/lib/supabase/client';
 import { logout } from '@/actions/auth';
 import { ASSETS } from '@/lib/assets';
+import { LowPolyBackdrop, LowPolyIcon } from '@/components/low-poly';
+import { ROLE_PRESENTATION } from '@/components/low-poly/role-presentation';
+import classes from '@/components/low-poly/role-shell.module.css';
 
 export default function StudentLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -56,20 +59,19 @@ export default function StudentLayout({ children }: { children: React.ReactNode 
 
   return (
     <AppShell header={{ height: 64 }} padding="md">
-      <AppShell.Header
-        style={{
-          background: 'linear-gradient(135deg, #3b1fa8 0%, #6d28d9 60%, #7c3aed 100%)',
-          border: 'none',
-          boxShadow: '0 2px 20px rgba(80,30,180,0.18)',
-        }}
-      >
+      <AppShell.Header className={`${classes.header} ${classes.studentHeader}`}>
         <Group h="100%" px="xl" justify="space-between">
           {/* 좌측 로고 */}
           <Group gap={8}>
-            <Image src={ASSETS.question} alt="logo" width={28} height={28} />
-            <Text size="lg" fw={800} c="white" visibleFrom="xs" style={{ letterSpacing: -0.5 }}>
-              BOOK돋움 질문도감
-            </Text>
+            <LowPolyIcon name="question" size={30} alt="" />
+            <Box>
+              <Text size="lg" fw={900} c="white" visibleFrom="xs">
+                {ROLE_PRESENTATION.student.title}
+              </Text>
+              <Text size="xs" c="white" opacity={0.72} visibleFrom="sm">
+                {ROLE_PRESENTATION.student.subtitle}
+              </Text>
+            </Box>
           </Group>
 
           {/* 우측 네비 + 프로필 */}
@@ -79,22 +81,7 @@ export default function StudentLayout({ children }: { children: React.ReactNode 
                 key={item.href}
                 component={Link}
                 href={item.href}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 6,
-                  padding: '6px 14px',
-                  borderRadius: 10,
-                  color: 'white',
-                  fontWeight: pathname.startsWith(item.href) ? 700 : 400,
-                  background: pathname.startsWith(item.href)
-                    ? 'rgba(255,255,255,0.2)'
-                    : 'rgba(255,255,255,0.07)',
-                  border: pathname.startsWith(item.href)
-                    ? '1.5px solid rgba(255,255,255,0.35)'
-                    : '1.5px solid transparent',
-                  transition: 'all 0.18s',
-                }}
+                className={`${classes.navItem} ${pathname.startsWith(item.href) ? classes.navItemActive : ''}`}
               >
                 <Image src={item.icon} alt={item.label} width={18} height={18} />
                 <Text size="sm" visibleFrom="xs">{item.label}</Text>
@@ -105,16 +92,12 @@ export default function StudentLayout({ children }: { children: React.ReactNode 
             <Menu shadow="xl" width={200} radius="md">
               <Menu.Target>
                 <UnstyledButton
+                  className={classes.profile}
                   style={{
                     display: 'flex',
                     alignItems: 'center',
                     gap: 8,
                     padding: '4px 12px 4px 6px',
-                    borderRadius: 24,
-                    background: 'rgba(255,255,255,0.15)',
-                    border: '1.5px solid rgba(255,255,255,0.25)',
-                    color: 'white',
-                    transition: 'background 0.18s',
                   }}
                 >
                   <Box
@@ -157,13 +140,10 @@ export default function StudentLayout({ children }: { children: React.ReactNode 
         </Group>
       </AppShell.Header>
 
-      <AppShell.Main
-        style={{
-          background: 'linear-gradient(160deg, #f0ebff 0%, #ede9fe 40%, #e8e0ff 100%)',
-          minHeight: 'calc(100vh - 64px)',
-        }}
-      >
-        {children}
+      <AppShell.Main>
+        <LowPolyBackdrop variant="student" scene={false}>
+          {children}
+        </LowPolyBackdrop>
       </AppShell.Main>
     </AppShell>
   );

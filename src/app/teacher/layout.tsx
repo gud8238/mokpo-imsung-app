@@ -18,6 +18,9 @@ import { IconLayoutDashboard, IconLogout } from '@tabler/icons-react';
 import { createClient } from '@/lib/supabase/client';
 import { logout } from '@/actions/auth';
 import { ASSETS } from '@/lib/assets';
+import { LowPolyBackdrop, LowPolyIcon } from '@/components/low-poly';
+import { ROLE_PRESENTATION } from '@/components/low-poly/role-presentation';
+import classes from '@/components/low-poly/role-shell.module.css';
 
 export default function TeacherLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -51,19 +54,13 @@ export default function TeacherLayout({ children }: { children: React.ReactNode 
 
   return (
     <AppShell header={{ height: 64 }} padding="md">
-      <AppShell.Header
-        style={{
-          background: 'linear-gradient(135deg, #0f2557 0%, #1e3a8a 60%, #1d4ed8 100%)',
-          border: 'none',
-          boxShadow: '0 2px 20px rgba(15,37,87,0.25)',
-        }}
-      >
+      <AppShell.Header className={`${classes.header} ${classes.teacherHeader}`}>
         <Group h="100%" px="xl" justify="space-between">
           {/* 좌측 로고 */}
           <Group gap={8}>
-            <Image src={ASSETS.question} alt="logo" width={28} height={28} />
-            <Text size="lg" fw={800} c="white" style={{ letterSpacing: -0.5 }}>
-              BOOK돋움 질문도감
+            <LowPolyIcon name="question" size={30} alt="" />
+            <Text size="lg" fw={900} c="white">
+              {ROLE_PRESENTATION.teacher.title}
             </Text>
           </Group>
 
@@ -72,22 +69,7 @@ export default function TeacherLayout({ children }: { children: React.ReactNode 
             <UnstyledButton
               component={Link}
               href="/teacher"
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 6,
-                padding: '6px 14px',
-                borderRadius: 10,
-                color: 'white',
-                fontWeight: pathname === '/teacher' ? 700 : 400,
-                background: pathname === '/teacher'
-                  ? 'rgba(255,255,255,0.2)'
-                  : 'rgba(255,255,255,0.07)',
-                border: pathname === '/teacher'
-                  ? '1.5px solid rgba(255,255,255,0.35)'
-                  : '1.5px solid transparent',
-                transition: 'all 0.18s',
-              }}
+              className={`${classes.navItem} ${pathname === '/teacher' ? classes.navItemActive : ''}`}
             >
               <IconLayoutDashboard size={16} />
               <Text size="sm">대시보드</Text>
@@ -97,16 +79,12 @@ export default function TeacherLayout({ children }: { children: React.ReactNode 
             <Menu shadow="xl" width={200} radius="md">
               <Menu.Target>
                 <UnstyledButton
+                  className={classes.profile}
                   style={{
                     display: 'flex',
                     alignItems: 'center',
                     gap: 8,
                     padding: '4px 12px 4px 6px',
-                    borderRadius: 24,
-                    background: 'rgba(255,255,255,0.15)',
-                    border: '1.5px solid rgba(255,255,255,0.25)',
-                    color: 'white',
-                    transition: 'background 0.18s',
                   }}
                 >
                   <Box
@@ -148,13 +126,10 @@ export default function TeacherLayout({ children }: { children: React.ReactNode 
         </Group>
       </AppShell.Header>
 
-      <AppShell.Main
-        style={{
-          background: 'linear-gradient(160deg, #eff6ff 0%, #dbeafe 40%, #e0e7ff 100%)',
-          minHeight: 'calc(100vh - 64px)',
-        }}
-      >
-        {children}
+      <AppShell.Main>
+        <LowPolyBackdrop variant="teacher" scene={false}>
+          {children}
+        </LowPolyBackdrop>
       </AppShell.Main>
     </AppShell>
   );
