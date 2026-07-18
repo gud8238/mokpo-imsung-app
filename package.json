@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "assets:verify": "node scripts/verify-low-poly-assets.mjs",
     "test": "vitest run",
     "test:watch": "vitest"
   },
