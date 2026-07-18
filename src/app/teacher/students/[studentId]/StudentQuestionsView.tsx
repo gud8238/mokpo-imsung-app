@@ -65,7 +65,7 @@ export default function StudentQuestionsView({
   // AI 분석
   const [aiLoading, setAiLoading] = useState(false);
   const [aiResult, setAiResult] = useState<any>(null);
-  const [downloadingHwpx] = useState(false);
+  const [downloadingPdf, setDownloadingPdf] = useState(false);
   const [aiModalOpened, { open: openAiModal, close: closeAiModal }] = useDisclosure(false);
 
   // Group by book
@@ -123,32 +123,40 @@ export default function StudentQuestionsView({
     }
   }
 
-  function handleDownloadHwpx() {
+  async function handleDownloadPdf() {
     if (!aiResult) return;
-    
-    // 네이티브 브라우저 다운로드 방식을 위해 동적 Form 생성
-    const form = document.createElement('form');
-    form.method = 'POST';
-    form.action = '/api/download-hwpx';
-    
-    const fields = {
-      studentName: student.name,
-      summary: aiResult.summary,
-      strengths: aiResult.strengths,
-      areas_for_improvement: aiResult.areas_for_improvement,
-    };
-    
-    for (const [key, value] of Object.entries(fields)) {
-      const input = document.createElement('input');
-      input.type = 'hidden';
-      input.name = key;
-      input.value = value || '';
-      form.appendChild(input);
+
+    setDownloadingPdf(true);
+    try {
+      const response = await fetch('/api/download-pdf', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          studentId: student.id,
+          summary: aiResult.summary,
+          strengths: aiResult.strengths,
+          areasForImprovement: aiResult.areas_for_improvement,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('PDF generation failed');
+      }
+
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      const anchor = document.createElement('a');
+      anchor.href = url;
+      anchor.download = `${student.name}_질문진단결과.pdf`;
+      document.body.appendChild(anchor);
+      anchor.click();
+      anchor.remove();
+      URL.revokeObjectURL(url);
+    } catch {
+      setMessage({ type: 'error', text: 'PDF 보고서를 만들지 못했습니다. 잠시 후 다시 시도해주세요.' });
+    } finally {
+      setDownloadingPdf(false);
     }
-    
-    document.body.appendChild(form);
-    form.submit();
-    document.body.removeChild(form);
   }
 
   return (
@@ -367,15 +375,15 @@ export default function StudentQuestionsView({
         {aiResult && (
           <StorySurface tone="teacher" p="md" radius="lg">
           <Stack gap="md">
-            <Box p="md" style={{ background: 'rgba(232,241,252,.96)', borderRadius: 12 }}>
+            <Box p="md" style={{ background: 'rgba(232,241,252,.82)', borderRadius: 12 }}>
               <Title order={3} size="h5" c="indigo.7" mb="xs">총평</Title>
               <Text size="sm" style={{ lineHeight: 1.6 }}>{aiResult.summary}</Text>
             </Box>
-            <Box p="md" style={{ background: 'rgba(242,249,245,.96)', borderRadius: 12 }}>
+            <Box p="md" style={{ background: 'rgba(242,249,245,.82)', borderRadius: 12 }}>
               <Title order={3} size="h5" c="green.7" mb="xs">잘하고 있는 점</Title>
               <Text size="sm" style={{ lineHeight: 1.6 }}>{aiResult.strengths}</Text>
             </Box>
-            <Box p="md" style={{ background: 'rgba(255,248,222,.96)', borderRadius: 12 }}>
+            <Box p="md" style={{ background: 'rgba(255,248,222,.82)', borderRadius: 12 }}>
               <Title order={3} size="h5" c="yellow.8" mb="xs">앞으로의 발전 방향</Title>
               <Text size="sm" style={{ lineHeight: 1.6 }}>{aiResult.areas_for_improvement}</Text>
             </Box>
@@ -385,11 +393,11 @@ export default function StudentQuestionsView({
               variant="light"
               color="indigo"
               leftSection={<IconDownload size={16} />}
-              loading={downloadingHwpx}
-              onClick={handleDownloadHwpx}
+              loading={downloadingPdf}
+              onClick={handleDownloadPdf}
               fullWidth
             >
-              📄 결과 보고서 다운로드 (HWPX)
+              📄 결과 보고서 다운로드 (PDF)
             </Button>
           </Stack>
           </StorySurface>

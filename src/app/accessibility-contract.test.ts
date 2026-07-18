@@ -73,6 +73,17 @@ describe('low-poly accessibility contract', () => {
     expect(view).toContain('<Title order={3} size="h5"');
   });
 
+  it('downloads AI diagnosis as PDF without the legacy HWPX path', () => {
+    const view = source('src/app/teacher/students/[studentId]/StudentQuestionsView.tsx');
+    const packageJson = source('package.json');
+
+    expect(view).toContain("fetch('/api/download-pdf'");
+    expect(view).toContain('결과 보고서 다운로드 (PDF)');
+    expect(view).not.toContain('download-hwpx');
+    expect(view).not.toContain('HWPX');
+    expect(packageJson).not.toContain('md2hwp');
+  });
+
   it('provides skip links and a safe mobile login footer', () => {
     for (const path of ['src/app/student/layout.tsx', 'src/app/teacher/layout.tsx']) {
       const layout = source(path);

@@ -18,9 +18,9 @@ export const LOW_POLY_TOKENS = {
     coral: '#ef876d',
   },
   surface: {
-    opaque: 'rgba(255,255,255,0.96)',
-    glass: 'rgba(255,255,255,0.94)',
-    border: 'rgba(44,54,78,0.10)',
+    opaque: 'rgba(255,255,255,0.82)',
+    glass: 'rgba(255,255,255,0.74)',
+    border: 'rgba(255,255,255,0.58)',
   },
 } as const;
 

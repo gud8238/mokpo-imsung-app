@@ -50,4 +50,14 @@ describe('LoginPage', () => {
 
     expect(styles).toMatch(/@media \(max-width: 36em\) \{[\s\S]*?\.footer \{[\s\S]*?position: absolute;[\s\S]*?bottom: max\(16px, env\(safe-area-inset-bottom\)\);[\s\S]*?padding-inline: 16px;[\s\S]*?box-sizing: border-box;[\s\S]*?\}/);
   });
+
+  it('uses the supplied animated forest and a translucent white glass card', () => {
+    const backdropStyles = readFileSync('src/components/low-poly/low-poly.module.css', 'utf8');
+    const loginStyles = readFileSync('src/app/login/login.module.css', 'utf8');
+
+    expect(backdropStyles).toContain(".login .poster { background-image: url('/backgrounds/login-forest.gif'); }");
+    expect(loginStyles).toContain('background: rgba(255, 255, 255, 0.68);');
+    expect(loginStyles).toContain('backdrop-filter: blur(24px) saturate(130%);');
+    expect(backdropStyles).toMatch(/prefers-reduced-motion:[\s\S]*\.login \.poster[\s\S]*login-forest\.webp/);
+  });
 });

@@ -26,7 +26,7 @@
 | 인증/DB | **Supabase** (`@supabase/ssr`, `@supabase/supabase-js`) |
 | AI | **Google Gemini** (`@google/generative-ai`), 모델 `gemini-3.1-flash-lite` |
 | 차트 | `@mantine/charts` (recharts 3 기반) |
-| 문서 변환 | `md2hwp` (학생 진단 결과 → HWPX 한글파일 다운로드) |
+| 문서 변환 | `pdf-lib` + `@pdf-lib/fontkit` (학생 AI 진단 결과 → 디자인된 PDF 다운로드) |
 | 폰트 | Pretendard (CDN) |
 
 > ⚠️ **주의**: `AGENTS.md`에 따르면 이 Next.js는 학습 데이터와 다른 breaking change가 있을 수 있음. 코드 작성 전 `node_modules/next/dist/docs/` 참고 권장.
@@ -75,7 +75,7 @@ src/
     ├── layout.tsx                # 루트 레이아웃 (Mantine Provider, 테마=indigo)
     ├── page.tsx                  # '/' → /login 리다이렉트
     ├── login/page.tsx            # 로그인 화면 (배경 영상 + 카드)
-    ├── api/download-hwpx/route.ts# 학생 진단결과 HWPX 다운로드 API
+    ├── api/download-pdf/route.ts # 학생 진단결과 PDF 다운로드 API
     ├── student/                  # 👦 학생 영역 (보라색 테마)
     │   ├── layout.tsx            # 학생 네비게이션 (책 목록 / 내 기록)
     │   ├── books/                #   - 책 목록(BooksGrid) + [bookId] 질문작성(QuestionForm)
@@ -199,9 +199,20 @@ src/
 ## 12. 2026-07-19 저다각형 UI 개편
 
 - 모든 로그인·학생·교사 화면을 B안 하이브리드 스토리북 저다각형 UI로 개편했다.
-- 기존 Supabase 인증·질문 제출·교사 피드백·AI 분석·HWPX 다운로드 흐름은 유지했다.
+- 기존 Supabase 인증·질문 제출·교사 피드백·AI 분석 흐름은 유지했다.
 - 생성 에셋 6개와 데스크톱용 저전력 Three.js 장면을 추가했다. 모바일, 모션 감소, WebGL 실패 시 정적/CSS 장면으로 폴백한다.
 - 접근성 보강: 질문 유형 키보드 선택, 폼/아이콘 버튼 이름, 제목 계층, 본문 건너뛰기 링크, 모바일 교사 헤더를 적용했다.
 - Supabase MCP는 프로젝트 `wglnrealznvbvybcoaja`에 읽기 전용으로 연결해 스키마와 RLS를 확인했다.
 - 운영 배포 대상은 기존 `mokpo-imsung-app`이 아니라 **`mokpo-imsung-v1`**이다.
 - Netlify site ID: `8217888f-3b1e-4e42-b62c-e21bccf4353e`
+
+## 13. 2026-07-19 GIF·글래스 UI·PDF 진단 개편
+
+- 로그인 배경을 사용자 제공 GIF인 `public/backgrounds/login-forest.gif`로 교체했다. 움직임 감소 설정에서는 기존 정적 저폴리 포스터를 사용한다.
+- 로그인 카드는 반투명 흰색 글래스모피즘으로 바꾸고 입력창도 같은 유리 질감으로 정리했다.
+- 공통 `StorySurface`의 학생/교사/로그인 상단 색 띠를 제거하고 표면 불투명도를 낮춰 모든 역할 화면에서 배경이 더 잘 보이게 했다.
+- 학생 상단의 `책 목록`과 `내 기록`은 항상 동일한 테두리·배경·활성 상태를 가진 버튼으로 표시한다.
+- 질문 작성 화면은 `질문 먼저 작성 → 질문 유형 선택 → 제출` 순서로 바꿨으며 기존 라디오 키보드 조작은 유지했다.
+- AI 질문 진단 다운로드는 HWPX를 제거하고 `/api/download-pdf`에서 A4 PDF를 생성한다. Pretendard 한글 글꼴, 질문 유형 통계, 총평, 강점, 성장 방향, 페이지 번호를 포함한다.
+- PDF 단일 페이지 및 3페이지 장문 샘플을 Poppler로 렌더링해 한글과 페이지 전환을 검수했다.
+- Netlify CLI의 Windows 로컬 Edge Function 번들링은 드라이브 경로를 중복 조합해 실패하므로, 최종 배포는 GitHub Actions의 Ubuntu 러너에서 `netlify deploy --build --prod`로 수행한다.

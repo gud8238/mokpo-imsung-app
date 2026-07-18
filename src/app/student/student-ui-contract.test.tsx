@@ -61,4 +61,26 @@ describe('student UI contract', () => {
     expect(questionFormSource).toContain("'linear-gradient(135deg, #fff9db, #fffdf4)'");
     expect(historyViewSource).not.toContain("style={{ background: 'rgba(76,110,245,0.05)' }}");
   });
+
+  it('asks for the question before asking for its type', () => {
+    const questionFormSource = readFileSync(
+      resolve(process.cwd(), 'src/app/student/books/[bookId]/QuestionForm.tsx'),
+      'utf8',
+    );
+
+    const questionStage = questionFormSource.indexOf('책을 떠올리며 질문을 적어요');
+    const typeStage = questionFormSource.indexOf('질문의 종류를 골라요');
+
+    expect(questionStage).toBeGreaterThan(-1);
+    expect(typeStage).toBeGreaterThan(questionStage);
+  });
+
+  it('renders book list and history as matching navigation buttons', () => {
+    const layoutSource = readFileSync(resolve(process.cwd(), 'src/app/student/layout.tsx'), 'utf8');
+
+    expect(layoutSource).toContain("{ href: '/student/books', label: '책 목록'");
+    expect(layoutSource).toContain("{ href: '/student/history', label: '내 기록'");
+    expect(layoutSource.match(/className={`\$\{classes\.navItem\}/g)).toHaveLength(1);
+    expect(layoutSource).not.toContain("label: '내 기록', icon: ASSETS.book, compact: true");
+  });
 });

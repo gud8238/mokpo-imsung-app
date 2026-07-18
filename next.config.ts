@@ -1,6 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  outputFileTracingIncludes: {
+    '/api/download-pdf': ['./public/fonts/*.ttf'],
+  },
   images: {
     remotePatterns: [
       {

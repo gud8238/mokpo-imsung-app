@@ -68,10 +68,7 @@ export default function LoginPage() {
                 required
                 radius="md"
                 size="md"
-                styles={{
-                  label: { fontWeight: 600, marginBottom: 4, color: '#333' },
-                  input: { background: '#f8f7ff', border: '1px solid #e0daf0' },
-                }}
+                classNames={{ label: classes.fieldLabel, input: classes.fieldInput }}
               />
 
               <PasswordInput
@@ -82,10 +79,7 @@ export default function LoginPage() {
                 required
                 radius="md"
                 size="md"
-                styles={{
-                  label: { fontWeight: 600, marginBottom: 4, color: '#333' },
-                  input: { background: '#f8f7ff', border: '1px solid #e0daf0' },
-                }}
+                classNames={{ label: classes.fieldLabel, input: classes.fieldInput }}
               />
 
               <Button
@@ -95,13 +89,7 @@ export default function LoginPage() {
                 radius="md"
                 loading={loading}
                 leftSection={<IconLogin size={20} />}
-                style={{
-                  background: 'linear-gradient(135deg, #7c3aed, #4f46e5)',
-                  marginTop: 8,
-                  fontWeight: 700,
-                  letterSpacing: 0.5,
-                  boxShadow: '0 4px 20px rgba(100,60,200,0.3)',
-                }}
+                className={classes.submitButton}
               >
                 탐험 시작하기
               </Button>

@@ -29,7 +29,7 @@
   background-size: cover;
 }
 
-.login .poster { background-image: url('/low-poly/login-forest.webp'); }
+.login .poster { background-image: url('/backgrounds/login-forest.gif'); }
 .student .poster { background-image: url('/low-poly/student-trail.webp'); }
 .teacher .poster { background-image: url('/low-poly/teacher-observatory.webp'); }
 
@@ -47,15 +47,15 @@
 }
 
 .login .roleOverlay {
-  background: linear-gradient(135deg, rgba(24, 38, 48, 0.34), rgba(66, 42, 92, 0.24));
+  background: linear-gradient(135deg, rgba(18, 29, 38, 0.22), rgba(61, 39, 84, 0.14));
 }
 
 .student .roleOverlay {
-  background: linear-gradient(160deg, rgba(246, 241, 255, 0.72), rgba(235, 247, 230, 0.82));
+  background: linear-gradient(160deg, rgba(246, 241, 255, 0.24), rgba(235, 247, 230, 0.34));
 }
 
 .teacher .roleOverlay {
-  background: linear-gradient(160deg, rgba(237, 245, 255, 0.78), rgba(230, 234, 248, 0.86));
+  background: linear-gradient(160deg, rgba(237, 245, 255, 0.28), rgba(230, 234, 248, 0.38));
 }
 
 .content {
@@ -65,16 +65,19 @@
 }
 
 .surface {
-  background: var(--lp-surface);
-  border: 1px solid var(--lp-border);
-  box-shadow: 0 18px 45px rgba(41, 49, 76, 0.14);
-  backdrop-filter: blur(14px);
+  background: rgba(255, 255, 255, 0.74);
+  border: 1px solid rgba(255, 255, 255, 0.58);
+  box-shadow: 0 18px 45px rgba(41, 49, 76, 0.13);
+  backdrop-filter: blur(18px) saturate(120%);
+  -webkit-backdrop-filter: blur(18px) saturate(120%);
 }
 
-.surface_student { border-top: 3px solid #7259d9; }
-.surface_teacher { border-top: 3px solid #356b9e; }
-.surface_warm { border-top: 3px solid #ef876d; }
-.surface_neutral { border-top: 3px solid rgba(44, 54, 78, 0.12); }
+.surface_student,
+.surface_teacher,
+.surface_warm,
+.surface_neutral {
+  border-top: 0;
+}
 
 @keyframes polygon-drift {
   from { transform: translate3d(-1.5%, -1%, 0) scale(1); }
@@ -83,9 +86,14 @@
 
 @media (max-width: 47.99em) {
   .polygonDrift { opacity: 0.18; }
-  .surface { backdrop-filter: none; }
+  .surface {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(14px) saturate(115%);
+    -webkit-backdrop-filter: blur(14px) saturate(115%);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .polygonDrift { animation: none; }
+  .login .poster { background-image: url('/low-poly/login-forest.webp'); }
 }

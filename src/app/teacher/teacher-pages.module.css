@@ -6,7 +6,7 @@
 .chart { overflow: hidden; }
 .listItem { transition: transform .2s ease, box-shadow .2s ease; }
 .listItem:hover { transform: translateY(-3px); box-shadow: 0 16px 30px rgba(42,61,90,.14); }
-.feedback { background: rgba(242,249,245,.96); }
+.feedback { background: rgba(242,249,245,.76); }
 @media (max-width: 36em) {
   .page { padding-block: 20px 36px; }
   .hero { padding: 20px; }

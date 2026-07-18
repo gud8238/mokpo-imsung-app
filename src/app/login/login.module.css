@@ -7,6 +7,37 @@
 
 .card {
   padding: 44px;
+  background: rgba(255, 255, 255, 0.68);
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  box-shadow: 0 28px 70px rgba(24, 32, 54, 0.28);
+  backdrop-filter: blur(24px) saturate(130%);
+  -webkit-backdrop-filter: blur(24px) saturate(130%);
+}
+
+.fieldLabel {
+  margin-bottom: 4px;
+  color: #293247;
+  font-weight: 700;
+}
+
+.fieldInput {
+  border: 1px solid rgba(100, 91, 146, 0.18);
+  background: rgba(255, 255, 255, 0.58);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
+}
+
+.fieldInput:focus,
+.fieldInput:focus-within {
+  border-color: rgba(92, 75, 190, 0.56);
+  background: rgba(255, 255, 255, 0.76);
+}
+
+.submitButton {
+  margin-top: 8px;
+  background: linear-gradient(135deg, #7048e8, #4c5bdc);
+  box-shadow: 0 10px 26px rgba(80, 64, 184, 0.28);
+  font-weight: 800;
+  letter-spacing: 0.02em;
 }
 
 .schoolMark {
@@ -52,5 +83,12 @@
     bottom: max(16px, env(safe-area-inset-bottom));
     padding-inline: 16px;
     box-sizing: border-box;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
   }
 }

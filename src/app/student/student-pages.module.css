@@ -8,7 +8,7 @@
 .bookCoverFrame { aspect-ratio: 3 / 4; }
 .questionStage { margin-bottom: 18px; }
 .historyItem { position: relative; overflow: hidden; }
-.feedback { background: rgba(246,248,255,.96); }
+.feedback { background: rgba(246,248,255,.76); }
 @media (max-width: 36em) {
   .page { padding-block: 20px 36px; }
   .hero { padding: 20px; }

@@ -243,11 +243,36 @@ export default function QuestionForm({
         <Stack gap="lg">
           <StorySurface tone="student" radius="lg" p="xl" className={classes.questionStage}>
             <Text className={classes.eyebrow} size="xs">질문 씨앗 1</Text>
+            <Title order={2} size="h3" className={classes.title} mb="md">
+              책을 떠올리며 질문을 적어요
+            </Title>
+            <Textarea
+              aria-label="질문 내용"
+              value={questionText}
+              onChange={(e) => setQuestionText(e.target.value)}
+              placeholder="이 책에 대해 궁금한 것을 질문으로 만들어 보세요!"
+              minRows={4}
+              maxRows={8}
+              radius="md"
+              size="md"
+              autosize
+              styles={{
+                input: {
+                  fontSize: '16px',
+                  lineHeight: 1.6,
+                  background: 'rgba(255, 255, 255, 0.64)',
+                },
+              }}
+            />
+          </StorySurface>
+
+          <StorySurface tone="student" radius="lg" p="xl" className={classes.questionStage}>
+            <Text className={classes.eyebrow} size="xs">질문 씨앗 2</Text>
             <Title order={2} size="h3" className={classes.title} mb={4}>
-              어떤 질문을 만들지 골라요
+              질문의 종류를 골라요
             </Title>
             <Text size="sm" c="dimmed" mb="md">
-              아래에서 질문 유형을 선택해주세요
+              먼저 적은 질문과 가장 가까운 유형을 선택해주세요
             </Text>
 
             <SimpleGrid
@@ -287,7 +312,7 @@ export default function QuestionForm({
                           : undefined,
                         background: isSelected
                           ? `var(--mantine-color-${type.color}-0)`
-                          : 'white',
+                          : 'rgba(255, 255, 255, 0.62)',
                         textAlign: 'center',
                         cursor: 'pointer',
                       }}
@@ -333,30 +358,6 @@ export default function QuestionForm({
                 );
               })}
             </SimpleGrid>
-          </StorySurface>
-
-          <StorySurface tone="student" radius="lg" p="xl" className={classes.questionStage}>
-            <Text className={classes.eyebrow} size="xs">질문 씨앗 2</Text>
-            <Title order={2} size="h3" className={classes.title} mb="md">
-              책을 떠올리며 질문을 적어요
-            </Title>
-            <Textarea
-              aria-label="질문 내용"
-              value={questionText}
-              onChange={(e) => setQuestionText(e.target.value)}
-              placeholder="이 책에 대해 궁금한 것을 질문으로 만들어 보세요!"
-              minRows={4}
-              maxRows={8}
-              radius="md"
-              size="md"
-              autosize
-              styles={{
-                input: {
-                  fontSize: '16px',
-                  lineHeight: 1.6,
-                },
-              }}
-            />
           </StorySurface>
 
           {error && (
