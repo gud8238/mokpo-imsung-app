@@ -141,7 +141,7 @@ export default function StudentLayout({ children }: { children: React.ReactNode 
         </Group>
       </AppShell.Header>
 
-      <AppShell.Main id="student-main">
+      <AppShell.Main id="student-main" tabIndex={-1}>
         <LowPolyBackdrop variant="student" scene={false}>
           {children}
         </LowPolyBackdrop>

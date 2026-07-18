@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import Link from 'next/link';
 import {
   Container,
@@ -107,6 +107,38 @@ export default function QuestionForm({
   const [aiResult, setAiResult] = useState<AIAnalysisResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
+  const questionTypeRefs = useRef<Array<HTMLButtonElement | null>>([]);
+
+  function selectQuestionType(index: number) {
+    setSelectedType(QUESTION_TYPES[index].value);
+    questionTypeRefs.current[index]?.focus();
+  }
+
+  function handleQuestionTypeKeyDown(event: React.KeyboardEvent<HTMLButtonElement>, index: number) {
+    let nextIndex: number | null = null;
+
+    switch (event.key) {
+      case 'ArrowRight':
+      case 'ArrowDown':
+        nextIndex = (index + 1) % QUESTION_TYPES.length;
+        break;
+      case 'ArrowLeft':
+      case 'ArrowUp':
+        nextIndex = (index - 1 + QUESTION_TYPES.length) % QUESTION_TYPES.length;
+        break;
+      case 'Home':
+        nextIndex = 0;
+        break;
+      case 'End':
+        nextIndex = QUESTION_TYPES.length - 1;
+        break;
+      default:
+        return;
+    }
+
+    event.preventDefault();
+    selectQuestionType(nextIndex);
+  }
 
   async function handleSubmit() {
     if (!selectedType || !questionText.trim()) {
@@ -224,7 +256,7 @@ export default function QuestionForm({
               role="radiogroup"
               aria-label="질문 유형"
             >
-              {QUESTION_TYPES.map((type) => {
+              {QUESTION_TYPES.map((type, index) => {
                 const Icon = type.icon;
                 const isSelected = selectedType === type.value;
                 return (
@@ -241,8 +273,11 @@ export default function QuestionForm({
                       type="button"
                       role="radio"
                       aria-checked={isSelected}
+                      tabIndex={selectedType === null ? (index === 0 ? 0 : -1) : (isSelected ? 0 : -1)}
+                      ref={(node) => { questionTypeRefs.current[index] = node; }}
                       className={`question-type-card ${isSelected ? 'selected' : ''}`}
                       onClick={() => setSelectedType(type.value)}
+                      onKeyDown={(event) => handleQuestionTypeKeyDown(event, index)}
                       padding="md"
                       radius="lg"
                       withBorder
@@ -375,7 +410,7 @@ export default function QuestionForm({
               }}
             >
               <Text className={classes.eyebrow} size="xs">생각이 자랐어요</Text>
-              <Title order={3} className={classes.title} mb="md">AI 친구의 따뜻한 피드백</Title>
+              <Title order={2} size="h3" className={classes.title} mb="md">AI 친구의 따뜻한 피드백</Title>
               <Group mb="md" gap="sm">
                 <Box
                   style={{
@@ -390,7 +425,7 @@ export default function QuestionForm({
                 >
                   <IconSparkles size={20} color="white" />
                 </Box>
-                <Title order={4} c="dark.7">
+                <Title order={3} size="h5" c="dark.7">
                   🤖 AI 선생님의 분석
                 </Title>
               </Group>
@@ -488,7 +523,7 @@ export default function QuestionForm({
       {/* Previous questions for this book */}
       {previousQuestions.length > 0 && (
         <StorySurface tone="student" mt="xl" p="lg">
-          <Title order={4} c="dark.7" mb="md">
+          <Title order={2} size="h5" c="dark.7" mb="md">
             📝 이 책에 대한 내 이전 질문들
           </Title>
           <Accordion variant="separated" radius="lg">

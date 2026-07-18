@@ -70,6 +70,7 @@ export default function TeacherLayout({ children }: { children: React.ReactNode 
             <UnstyledButton
               component={Link}
               href="/teacher"
+              aria-label="대시보드"
               className={`${classes.navItem} ${pathname === '/teacher' ? classes.navItemActive : ''}`}
             >
               <IconLayoutDashboard size={16} />
@@ -81,6 +82,7 @@ export default function TeacherLayout({ children }: { children: React.ReactNode 
               <Menu.Target>
                 <UnstyledButton
                   className={classes.profile}
+                  aria-label="교사 메뉴"
                   style={{
                     display: 'flex',
                     alignItems: 'center',
@@ -100,7 +102,7 @@ export default function TeacherLayout({ children }: { children: React.ReactNode 
                       justifyContent: 'center',
                     }}
                   >
-                    <Image src={ASSETS.student} alt="teacher" width={22} height={22} />
+                    <Image src={ASSETS.student} alt="" width={22} height={22} />
                   </Box>
                   <Text size="sm" fw={600} visibleFrom="xs">
                     {profile?.name || '교사'}
@@ -127,7 +129,7 @@ export default function TeacherLayout({ children }: { children: React.ReactNode 
         </Group>
       </AppShell.Header>
 
-      <AppShell.Main id="teacher-main">
+      <AppShell.Main id="teacher-main" tabIndex={-1}>
         <LowPolyBackdrop variant="teacher" scene={false}>
           {children}
         </LowPolyBackdrop>

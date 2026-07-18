@@ -123,7 +123,7 @@ export default function BookQuestionsView({
             </Box>
           )}
           <Box style={{ flex: 1 }}>
-            <Title order={3} className={classes.title} mb={4}>{book.title}</Title>
+            <Title order={2} size="h3" className={classes.title} mb={4}>{book.title}</Title>
             {book.author && <Text size="sm" c="dimmed" mb="xs">✍️ {book.author}</Text>}
             <Group gap="xs" mt="sm">
               <Badge color="blue" variant="light" size="sm">사실적 {typeCounts.factual}</Badge>

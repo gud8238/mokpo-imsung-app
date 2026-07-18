@@ -12,8 +12,16 @@ describe('low-poly accessibility contract', () => {
     expect(questionForm).toContain('role="radio"');
     expect(questionForm).toContain('aria-checked={isSelected}');
     expect(questionForm).toContain('type="button"');
+    expect(questionForm).toContain('tabIndex={selectedType === null ? (index === 0 ? 0 : -1) : (isSelected ? 0 : -1)}');
+    expect(questionForm).toContain('onKeyDown={(event) => handleQuestionTypeKeyDown(event, index)}');
+    expect(questionForm).toContain("case 'ArrowRight':");
+    expect(questionForm).toContain("case 'Home':");
+    expect(questionForm).toContain('selectQuestionType(nextIndex);');
+    expect(questionForm).toContain('questionTypeRefs.current[index]?.focus()');
     expect(questionForm).toContain('aria-label="질문 내용"');
     expect(questionForm).toContain('<Title order={1} size="h3"');
+    expect(questionForm).toContain('<Title order={2} size="h3" className={classes.title} mb="md">AI 친구의 따뜻한 피드백</Title>');
+    expect(questionForm).toContain('<Title order={2} size="h5" c="dark.7" mb="md">');
   });
 
   it('labels teacher actions and feedback inputs', () => {
@@ -42,6 +50,7 @@ describe('low-poly accessibility contract', () => {
       expect(layout).toContain('href="#');
       expect(layout).toContain('className={classes.skipLink}');
       expect(layout).toContain('<AppShell.Main id=');
+      expect(layout).toContain('tabIndex={-1}');
     }
 
     const loginCss = source('src/app/login/login.module.css');
@@ -55,5 +64,19 @@ describe('low-poly accessibility contract', () => {
     expect(grid).toContain('loading="lazy"');
     expect(grid).toContain('className={classes.bookCoverFrame}');
     expect(css).toContain('aspect-ratio: 3 / 4');
+  });
+
+  it('keeps compact teacher controls named and decorative artwork silent', () => {
+    const layout = source('src/app/teacher/layout.tsx');
+
+    expect(layout).toContain('aria-label="대시보드"');
+    expect(layout).toContain('aria-label="교사 메뉴"');
+    expect(layout).toContain('alt=""');
+  });
+
+  it('does not skip from the book archive h1 to an h3 section', () => {
+    const view = source('src/app/teacher/books/[bookId]/BookQuestionsView.tsx');
+
+    expect(view).toContain('<Title order={2} size="h3" className={classes.title} mb={4}>{book.title}</Title>');
   });
 });
