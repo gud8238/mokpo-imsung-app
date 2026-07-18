@@ -64,7 +64,7 @@ export default function StudentQuestionsView({
   // AI 분석
   const [aiLoading, setAiLoading] = useState(false);
   const [aiResult, setAiResult] = useState<any>(null);
-  const [downloadingHwpx, setDownloadingHwpx] = useState(false);
+  const [downloadingHwpx] = useState(false);
   const [aiModalOpened, { open: openAiModal, close: closeAiModal }] = useDisclosure(false);
 
   // Group by book

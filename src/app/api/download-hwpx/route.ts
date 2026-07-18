@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-// @ts-ignore
 import { convertMarkdownToHwp } from 'md2hwp';
 
 export async function POST(request: Request) {
