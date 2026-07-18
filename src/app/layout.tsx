@@ -1,18 +1,7 @@
 import '@mantine/core/styles.css';
 import './globals.css';
-import { ColorSchemeScript, MantineProvider, createTheme, mantineHtmlProps } from '@mantine/core';
-
-const theme = createTheme({
-  primaryColor: 'indigo',
-  fontFamily: '"Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif',
-  defaultRadius: 'lg',
-  colors: {
-    indigo: [
-      '#edf2ff', '#dbe4ff', '#bac8ff', '#91a7ff', '#748ffc',
-      '#5c7cfa', '#4c6ef5', '#4263eb', '#3b5bdb', '#364fc7',
-    ],
-  },
-});
+import { ColorSchemeScript, mantineHtmlProps } from '@mantine/core';
+import { Providers } from './Providers';
 
 export const metadata = {
   title: '목포임성초 독서 질문',
@@ -36,9 +25,7 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <MantineProvider theme={theme} defaultColorScheme="light">
-          {children}
-        </MantineProvider>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
