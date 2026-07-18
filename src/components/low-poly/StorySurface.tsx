@@ -1,9 +1,10 @@
+import { type PropsWithChildren } from 'react';
 import { Paper, type PaperProps } from '@mantine/core';
 import classes from './low-poly.module.css';
 
-type StorySurfaceProps = PaperProps & {
+type StorySurfaceProps = PropsWithChildren<PaperProps & {
   tone?: 'neutral' | 'student' | 'teacher' | 'warm';
-};
+}>;
 
 export function StorySurface({
   tone = 'neutral',
