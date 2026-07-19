@@ -103,7 +103,7 @@
 
 이번 전면 개편은 **B안: 하이브리드 스토리북**을 기준으로 한다.
 
-- 로그인은 `login-forest.webp` 포스터와 데스크톱 Three.js 장면을 겹쳐 깊이감을 만든다.
+- 로그인은 제공된 `/backgrounds/login-forest.gif` 포스터를 유지하고 WebGL 장면을 비활성화한다. `prefers-reduced-motion: reduce`에서는 `/low-poly/login-forest.webp` 정적 포스터로 대체한다.
 - 학생 영역은 보라색 독서 탐험길, 교사 영역은 파란색 관찰소 분위기를 유지한다.
 - 본문은 반드시 `StorySurface`처럼 불투명도 94% 이상의 밝은 표면 위에 배치한다. 배경 장식 위에 본문을 직접 올리지 않는다.
 - 3D 캔버스와 장식 레이어는 `pointer-events: none`으로 두고 콘텐츠보다 낮은 z-index를 사용한다.

@@ -1,5 +1,5 @@
 import { readFileSync } from 'node:fs';
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import { MantineProvider } from '@mantine/core';
 import { vi } from 'vitest';
 import LoginPage from './page';
@@ -7,6 +7,47 @@ import LoginPage from './page';
 vi.mock('@/actions/auth', () => ({
   login: vi.fn(async () => ({ error: null })),
 }));
+
+vi.mock('@/components/low-poly', async () => {
+  const actual = await vi.importActual<typeof import('@/components/low-poly')>(
+    '@/components/low-poly',
+  );
+
+  return {
+    ...actual,
+    LowPolyBackdrop: ({
+      variant,
+      scene,
+      children,
+    }: {
+      variant: string;
+      scene?: boolean;
+      children: React.ReactNode;
+    }) => (
+      <div
+        data-testid="low-poly-backdrop"
+        data-variant={variant}
+        data-scene={String(scene)}
+      >
+        {children}
+      </div>
+    ),
+    LowPolyIcon: ({
+      name,
+      size,
+    }: {
+      name: string;
+      size?: number;
+      alt?: string;
+    }) => (
+      <span
+        aria-hidden="true"
+        data-testid={`low-poly-icon-${name}`}
+        data-size={size}
+      />
+    ),
+  };
+});
 
 vi.mock('next/image', () => ({
   default: ({ alt = '', ...props }: React.ImgHTMLAttributes<HTMLImageElement>) => (
@@ -62,11 +103,15 @@ describe('LoginPage', () => {
   });
 
   it('disables only the login WebGL decoration scene', () => {
-    const page = readFileSync('src/app/login/page.tsx', 'utf8');
+    render(<MantineProvider><LoginPage /></MantineProvider>);
 
-    expect(page).toContain('<LowPolyBackdrop variant="login" scene={false}>');
-    expect(page).toContain('<Box className={classes.schoolMark} visibleFrom="sm">');
-    expect(page).toContain('<Text className={classes.footer}>');
-    expect(page).toContain('<LowPolyIcon name="book" size={84} alt="" />');
+    const backdrop = screen.getByTestId('low-poly-backdrop');
+    expect(backdrop).toHaveAttribute('data-variant', 'login');
+    expect(backdrop).toHaveAttribute('data-scene', 'false');
+    expect(screen.getByText('목포임성초등학교')).toBeInTheDocument();
+    expect(screen.getByText(/Copyright© 목포임성초 서찬아/)).toBeInTheDocument();
+    expect(
+      within(screen.getByTestId('login-card')).getByTestId('low-poly-icon-book'),
+    ).toHaveAttribute('data-size', '84');
   });
 });
